@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +11,12 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.disableNotifications();
+mix.browserSync({
+    proxy: process.env.MIX_SENTRY_DSN_PUBLIC,
+});
+
+mix.js("resources/js/app.js", "public/js").postCss(
+    "resources/css/app.css",
+    "public/css"
+).typeScript('resources/ts/maps.ts', 'public/maps');

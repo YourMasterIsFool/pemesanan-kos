@@ -12,7 +12,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('js/app.js') }}" rel="stylesheet">
 
-
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -24,14 +23,18 @@
 <body class="antialiased">
     @include('sweetalert::alert')
 
-    <div class="landing">
-        <div>
-            <h2 style="margin-bottom: 20px;">Selamat Datang di Website Pemesanan Kos</h2>
-            <h3 style="font-weight: 200; margin-bottom: 12px; ">Mulai cari kos anda sekarang</h3>
-            <a href="{{route('kos.search')}}" class="btn1">Cari</a>
+    <div class="maps-search">
+        <div class="left" id="map">
+
+        </div>
+        <div class="right">
+
         </div>
     </div>
 
+    <script src="{{asset('maps/maps.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap"
+    async defer></script>
 </body>
 
 </html>

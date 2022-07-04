@@ -58,9 +58,9 @@ class ClientController extends Controller
         ], 'template' => "<div class='maps-item'>
         <h1>{$kos['judul']}</h1>
         <div id='bodyContent'>
-            <p>{$kos['lokasi']}</p>
-            <p>{$kos['deskripsi']}</p>
-            <a target='_blank' href='/heay/{$kos['id']}'>Detail Kos</a>
+            <p class='lokasi'>{$kos['lokasi']}</p>
+            <p class='deskripsi'>{$kos['deskripsi']}</p>
+            <a class='detail' target='_blank' href='/heay/{$kos['id']}'>Detail Kos</a>
         </div>
     </div>"];
     }

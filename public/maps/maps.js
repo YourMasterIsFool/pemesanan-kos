@@ -11,36 +11,58 @@ var exports = __webpack_exports__;
 
 exports.__esModule = true; // @ts-nocheck comment to disable all type checking in a TypeScript file
 
-var map, infoWindow;
+var map, infoWindow, geocoder;
 
 function initMap() {
+  // init and pin center map
   var poliwangi = {
     lat: -8.29384475615435,
     lng: 114.30690765363136
-  },
-      map = new google.maps.Map(document.getElementById("map"), {
+  };
+  var mapDiv = document.getElementById("map");
+  var map = new google.maps.Map(mapDiv, {
     center: poliwangi,
     zoom: 12,
-    disableDefaultUI: true
+    zoomControl: false,
+    scaleControl: true
   });
   infoWindow = new google.maps.InfoWindow();
+  geocoder = new google.maps.Geocoder(); // Add Pin Current Location Button
+
   var locationButton = document.createElement("button");
   locationButton.textContent = "Pin lokasi anda";
   locationButton.classList.add("maps-btn");
-  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton);
+  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton); // Listener
+
+  google.maps.event.addDomListener(mapDiv, "click", function () {
+    infoWindow.close();
+  });
   locationButton.addEventListener("click", function () {
-    // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        infoWindow.setPosition(pos);
-        infoWindow.setContent("Lokasi Anda");
-        infoWindow.open(map);
-        map.setCenter(pos);
-        map.setZoom(15);
+        geocoder.geocode({
+          location: pos
+        }).then(function (response) {
+          if (response.results[0]) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(response.results[0].formatted_address);
+            infoWindow.open(map);
+            map.setCenter(pos);
+            map.setZoom(15);
+          } else {
+            window.alert("No results found");
+          }
+        })["catch"](function (e) {
+          return window.alert("Geocoder failed due to: " + e);
+        }); // infoWindow.setPosition(pos);
+        // infoWindow.setContent("Lokasi Anda");
+        // infoWindow.open(map);
+        // map.setCenter(pos);
+        // map.setZoom(15);
       }, function () {
         handleLocationError(true, infoWindow, map.getCenter());
       });
@@ -57,10 +79,6 @@ function initMap() {
 
 }
 
-function handleClick(e) {
-  console.log(e);
-}
-
 function createMarker(map, data) {
   var image = "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c";
   var marker = new google.maps.Marker({
@@ -71,11 +89,34 @@ function createMarker(map, data) {
     map: map,
     icon: image
   });
-  var infowindow = new google.maps.InfoWindow({
+  var markerInfoWindow = new google.maps.InfoWindow({
     content: data.template
   });
   google.maps.event.addListener(marker, "click", function () {
-    infowindow.open(map, marker);
+    markerInfoWindow.open(map, marker);
+    map.setZoom(15);
+    map.setCenter(marker.getPosition());
+  });
+} // reverse geocoding
+
+
+function geocodeLatLng(geocoder, map, infowindow, coordinate) {
+  geocoder.geocode({
+    location: latlng
+  }).then(function (response) {
+    if (response.results[0]) {
+      map.setZoom(11);
+      var marker = new google.maps.Marker({
+        position: latlng,
+        map: map
+      });
+      infowindow.setContent(response.results[0].formatted_address);
+      infowindow.open(map, marker);
+    } else {
+      window.alert("No results found");
+    }
+  })["catch"](function (e) {
+    return window.alert("Geocoder failed due to: " + e);
   });
 }
 
@@ -86,7 +127,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 window.initMap = initMap;
-window.handleClick = handleClick;
 })();
 
 /******/ })()

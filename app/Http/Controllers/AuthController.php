@@ -14,19 +14,19 @@ class AuthController extends Controller
 {
     public function loginView()
     {
-        return view('auth.login');
+        return view('dashboard.auth.login');
     }
 
     public function registerView()
     {
-        return view('auth.register');
+        return view('dashboard.auth.register');
     }
 
     public function profileView(Request $request)
     {
         $user = $request->user();
 
-        return view('dashboard.profil.index', compact('user'));
+        return view('dashboard.auth.profil.index', compact('user'));
     }
 
     public function updateProfil(Request $request)

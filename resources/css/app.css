@@ -458,3 +458,14 @@ table td {
 .maps-item{
     width: 400px;
 }
+.maps-item .lokasi{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+.maps-item .detail{
+    margin-top: 10px;
+    color: rgb(77, 77, 255);
+    font-weight: bold;
+    display: inline-block;
+}

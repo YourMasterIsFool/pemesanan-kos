@@ -1,18 +1,22 @@
 // @ts-nocheck comment to disable all type checking in a TypeScript file
-let map: google.maps.Map, infoWindow: google.maps.InfoWindow;
+let map: google.maps.Map,
+    infoWindow: google.maps.InfoWindow,
+    geocoder: google.maps.Geocoder;
 
 function initMap(): void {
-    const poliwangi = { lat: -8.29384475615435, lng: 114.30690765363136 },
-        map = new google.maps.Map(
-            document.getElementById("map") as HTMLElement,
-            {
-                center: poliwangi,
-                zoom: 12,
-                disableDefaultUI: true,
-            }
-        );
+    // init and pin center map
+    const poliwangi = { lat: -8.29384475615435, lng: 114.30690765363136 };
+    const mapDiv = document.getElementById("map") as HTMLElement;
+    const map = new google.maps.Map(mapDiv, {
+        center: poliwangi,
+        zoom: 12,
+        zoomControl: false,
+        scaleControl: true,
+    });
     infoWindow = new google.maps.InfoWindow();
+    geocoder = new google.maps.Geocoder();
 
+    // Add Pin Current Location Button
     const locationButton = document.createElement("button");
 
     locationButton.textContent = "Pin lokasi anda";
@@ -22,8 +26,12 @@ function initMap(): void {
         locationButton
     );
 
+    // Listener
+    google.maps.event.addDomListener(mapDiv, "click", () => {
+        infoWindow.close();
+    });
+
     locationButton.addEventListener("click", () => {
-        // Try HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position: GeolocationPosition) => {
@@ -32,11 +40,28 @@ function initMap(): void {
                         lng: position.coords.longitude,
                     };
 
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent("Lokasi Anda");
-                    infoWindow.open(map);
-                    map.setCenter(pos);
-                    map.setZoom(15);
+                    geocoder
+                        .geocode({ location: pos })
+                        .then((response) => {
+                            if (response.results[0]) {
+                                infoWindow.setPosition(pos);
+                                infoWindow.setContent(response.results[0].formatted_address);
+                                infoWindow.open(map);
+                                map.setCenter(pos);
+                                map.setZoom(15);
+                            } else {
+                                window.alert("No results found");
+                            }
+                        })
+                        .catch((e) =>
+                            window.alert("Geocoder failed due to: " + e)
+                        );
+
+                    // infoWindow.setPosition(pos);
+                    // infoWindow.setContent("Lokasi Anda");
+                    // infoWindow.open(map);
+                    // map.setCenter(pos);
+                    // map.setZoom(15);
                 },
                 () => {
                     handleLocationError(true, infoWindow, map.getCenter()!);
@@ -48,7 +73,7 @@ function initMap(): void {
         }
     });
 
-    for (let dataKos in kos){
+    for (let dataKos in kos) {
         createMarker(map, kos[dataKos]);
     }
 
@@ -56,28 +81,54 @@ function initMap(): void {
     // console.log(coordinate);
 }
 
-function handleClick (e: any){
-    console.log(e);
-}
-
-function createMarker(
-    map: google.maps.Map,
-    data: any,
-): void {
+function createMarker(map: google.maps.Map, data: any): void {
     const image =
         "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c";
 
     const marker = new google.maps.Marker({
-        position: { lat: data.coordinate.latitude , lng: data.coordinate.longitude },
+        position: {
+            lat: data.coordinate.latitude,
+            lng: data.coordinate.longitude,
+        },
         map: map,
         icon: image,
     });
-    const infowindow = new google.maps.InfoWindow({
+    const markerInfoWindow = new google.maps.InfoWindow({
         content: data.template,
     });
+
     google.maps.event.addListener(marker, "click", () => {
-        infowindow.open(map, marker);
+        markerInfoWindow.open(map, marker);
+        map.setZoom(15);
+        map.setCenter(marker.getPosition() as google.maps.LatLng);
     });
+}
+
+// reverse geocoding
+function geocodeLatLng(
+    geocoder: google.maps.Geocoder,
+    map: google.maps.Map,
+    infowindow: google.maps.InfoWindow,
+    coordinate: any
+) {
+    geocoder
+        .geocode({ location: latlng })
+        .then((response) => {
+            if (response.results[0]) {
+                map.setZoom(11);
+
+                const marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                });
+
+                infowindow.setContent(response.results[0].formatted_address);
+                infowindow.open(map, marker);
+            } else {
+                window.alert("No results found");
+            }
+        })
+        .catch((e) => window.alert("Geocoder failed due to: " + e));
 }
 
 function handleLocationError(
@@ -100,5 +151,5 @@ declare global {
     }
 }
 window.initMap = initMap;
-window.handleClick = handleClick;
+
 export {};

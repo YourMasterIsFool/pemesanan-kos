@@ -18,3 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
+
+Route::get('/heay', function () {
+    return 'heay';
+});
+

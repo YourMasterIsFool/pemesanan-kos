@@ -32,9 +32,14 @@
         </div>
     </div>
 
-    <script src="{{asset('maps/maps.js')}}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap"
-    async defer></script>
+    
+
+    <script src="{{ asset('maps/maps.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap" async
+        defer></script>
+        <script>
+            const kos = @json($kos);
+        </script>
 </body>
 
 </html>

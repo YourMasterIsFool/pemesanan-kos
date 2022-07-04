@@ -9,7 +9,8 @@ var exports = __webpack_exports__;
   \******************************/
 
 
-exports.__esModule = true;
+exports.__esModule = true; // @ts-nocheck comment to disable all type checking in a TypeScript file
+
 var map, infoWindow;
 
 function initMap() {
@@ -48,18 +49,30 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
-  var image = "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c"; // Example Marker
 
+  for (var dataKos in kos) {
+    createMarker(map, kos[dataKos]);
+  } // console.log(kos);
+  // console.log(coordinate);
+
+}
+
+function handleClick(e) {
+  console.log(e);
+}
+
+function createMarker(map, data) {
+  var image = "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c";
   var marker = new google.maps.Marker({
     position: {
-      lat: -8.457945839895618,
-      lng: 114.26094528743843
+      lat: data.coordinate.latitude,
+      lng: data.coordinate.longitude
     },
     map: map,
     icon: image
   });
   var infowindow = new google.maps.InfoWindow({
-    content: "<p>Marker Location:" + marker.getTitle() + "</p>"
+    content: data.template
   });
   google.maps.event.addListener(marker, "click", function () {
     infowindow.open(map, marker);
@@ -73,6 +86,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 window.initMap = initMap;
+window.handleClick = handleClick;
 })();
 
 /******/ })()

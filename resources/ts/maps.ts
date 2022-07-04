@@ -1,3 +1,4 @@
+// @ts-nocheck comment to disable all type checking in a TypeScript file
 let map: google.maps.Map, infoWindow: google.maps.InfoWindow;
 
 function initMap(): void {
@@ -47,25 +48,36 @@ function initMap(): void {
         }
     });
 
+    for (let dataKos in kos){
+        createMarker(map, kos[dataKos]);
+    }
+
+    // console.log(kos);
+    // console.log(coordinate);
+}
+
+function handleClick (e: any){
+    console.log(e);
+}
+
+function createMarker(
+    map: google.maps.Map,
+    data: any,
+): void {
     const image =
         "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c";
 
-    // Example Marker
     const marker = new google.maps.Marker({
-        position: { lat: -8.457945839895618, lng: 114.26094528743843 },
+        position: { lat: data.coordinate.latitude , lng: data.coordinate.longitude },
         map: map,
         icon: image,
     });
     const infowindow = new google.maps.InfoWindow({
-        content: "<p>Marker Location:" + marker.getTitle() + "</p>",
+        content: data.template,
     });
     google.maps.event.addListener(marker, "click", () => {
         infowindow.open(map, marker);
     });
-}
-
-function createMarker(){
-    
 }
 
 function handleLocationError(
@@ -88,4 +100,5 @@ declare global {
     }
 }
 window.initMap = initMap;
+window.handleClick = handleClick;
 export {};

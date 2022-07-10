@@ -16,7 +16,7 @@ mix.browserSync({
     proxy: process.env.MIX_SENTRY_DSN_PUBLIC,
 });
 
-mix.js("resources/js/app.js", "public/js").postCss(
-    "resources/css/app.css",
-    "public/css"
-).typeScript('resources/ts/maps.ts', 'public/maps');
+mix.js("resources/js/app.js", "public/js")
+    .postCss("resources/css/app.css", "public/css")
+    .typeScript("resources/ts/maps.ts", "public/maps")
+    .typeScript("resources/ts/detailKosMaps.ts", "public/maps");

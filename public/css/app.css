@@ -14,7 +14,7 @@ a:hover {
     color: inherit;
 }
 body {
-    background-color: var(--color2);
+    background-color: var(--color1);
     font-family: "Poppins", sans-serif;
 }
 
@@ -35,7 +35,10 @@ li {
     --color1: #faf3e3;
     --color2: #ff9f29;
     --color3: #1a4d2e;
-    --color4: #000000;
+    --color4: #3b3b3b;
+}
+form label {
+    margin-bottom: 10px;
 }
 
 /* body::-webkit-scrollbar {
@@ -83,7 +86,8 @@ body::-webkit-scrollbar-thumb {
     background-color: #fff;
     border-color: var(--color2);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+    border: 1px;
+    box-shadow: 0 0 0 0.12rem var(--color2);
 }
 
 .btn1,
@@ -103,7 +107,7 @@ body::-webkit-scrollbar-thumb {
 .btn1:hover,
 .btn3:hover {
     background-color: #e79128;
-    color: var(--color4);
+    color: var(--color1);
 }
 .applyBtn {
     width: 80px;
@@ -112,7 +116,7 @@ body::-webkit-scrollbar-thumb {
 .btn2,
 .btn4 {
     color: var(--color2);
-    border: 1px solid var(--color3);
+    border: 1px solid var(--color2);
     padding: 9px 24px;
     background-color: var(--color4);
 }
@@ -147,8 +151,10 @@ body::-webkit-scrollbar-thumb {
 .login-container .content {
     height: 100vh;
     position: relative;
+    background-color: var(--color1);
 }
-.form-login {
+.form-login,
+.form-register {
     background-color: var(--color4);
     width: 600px;
     position: absolute;
@@ -157,6 +163,9 @@ body::-webkit-scrollbar-thumb {
     transform: translate(-50%, -50%);
     padding: 30px;
     border-radius: 5px;
+}
+.form-register {
+    width: 800px;
 }
 
 /* dashboared */
@@ -412,6 +421,18 @@ table td {
     display: block;
 }
 
+/* form */
+.double_form {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.double_form .left,
+.double_form .right {
+    flex: 40%;
+    margin: 10px;
+}
+
 /* Welcome */
 .landing {
     width: 100vw;
@@ -427,19 +448,16 @@ table td {
     text-align: center;
 }
 
-.maps-search{
+.maps-search {
     width: 100vw;
     height: 100vh;
     display: flex;
 }
-.maps-search .left{
+.maps-search .left {
     height: 100%;
     flex: 100%;
 }
-.maps-search .right{
-    
-}
-.maps-btn{
+.maps-btn {
     background-color: var(--color1);
     color: var(--color4);
     border: 0;
@@ -454,17 +472,18 @@ table td {
 }
 
 /* Maps Popup */
-.maps-item{
+.maps-item {
     width: 400px;
 }
-.maps-item .lokasi{
+.maps-item .lokasi {
     margin-top: 10px;
     margin-bottom: 5px;
     font-weight: 500;
 }
-.maps-item .detail{
+.maps-item .detail {
     margin-top: 10px;
     color: rgb(77, 77, 255);
     font-weight: bold;
     display: inline-block;
 }
+

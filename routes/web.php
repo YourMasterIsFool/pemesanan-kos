@@ -16,8 +16,12 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('user.login.view');
 });
+
+Route::get('/home', function () {
+    return view('welcome');
+})->name('welcome')->middleware(['auth']);
 
 Route::prefix('client')->middleware(['auth'])->group(function () {
     Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
@@ -31,6 +35,14 @@ Route::prefix('account')->group(function () {
     Route::get('/register', [AuthController::class, 'registerView'])->middleware('guest')->name('user.register.view');
     Route::post('/register', [AuthController::class, 'register'])->name('user.register.create');
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+
+});
+
+Route::prefix('pemilik')->middleware(['auth'])->group(function(){
+
 });
 
 Route::get('/heay', function () {

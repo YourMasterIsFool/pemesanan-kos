@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -21,6 +22,7 @@ class AuthController extends Controller
     {
         return view('dashboard.auth.register');
     }
+
 
     public function profileView(Request $request)
     {
@@ -79,25 +81,32 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
+
+    public function register(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'username' => ['required', 'min:3', 'unique:users'],
-            'password' => ['required', 'confirmed', 'min:5'],
-            'password_confirmation' => ['required']
-        ]);
-
-
+        $validated = $request->validated();
+        
         $validated['password'] = Hash::make($validated['password']);
 
-        $user = User::create($request->only(['name', 'username', 'password']));
-        $user->roles()->attach(1);
+        $filePath = Storage::disk('local')->put('ktp', $validated['ktp']);
+        $fileName = explode('/', $filePath)[1];
+
+        $user = User::create([
+            'nama' => $validated['nama'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'alamat' => $validated['alamat'],
+            'nomor_telepon' => $validated['no_telepon'],
+            'nik' => $validated['nik'],
+            'foto_ktp' => $fileName,
+            'jenis_kelamin' => $validated['jenis_kelamin']
+        ]);
+        $user->roles()->attach(3);
 
         auth()->login($user);
 
         Alert::success('info', 'Registrasi Berhasil');
-        return redirect()->route('dashboard.index')->with('pesan', 'berhasil register');
+        return redirect()->route('welcome')->with('pesan', 'berhasil register');
     }
 
     public function logout(Request $request)
@@ -115,19 +124,19 @@ class AuthController extends Controller
     {
 
         $validated = $request->validate([
-            'username' => ['required'],
-            'password' => ['required', 'min:5']
+            'email' => ['required'],
+            'password' => ['required']
         ]);
 
 
-        $cekUsername = User::where('username', $validated['username'])->get();
+        $cekEmail = User::where('email', $validated['email'])->get();
 
-        if (count($cekUsername->all()) > 0 == false) {
-            Alert::error('error', 'Username tidak ditemukan');
+        if (count($cekEmail->all()) > 0 == false) {
+            Alert::error('error', 'Email tidak ditemukan');
             return redirect()->route('user.login.view');
         }
 
-        $passwordValid = Hash::check($request->password, $cekUsername[0]['password']);
+        $passwordValid = Hash::check($request->password, $cekEmail[0]['password']);
         if (!$passwordValid) {
             Alert::error('error', 'Password salah');
             return redirect()->route('user.login.view');
@@ -139,15 +148,15 @@ class AuthController extends Controller
             if ($roles === 'Admin') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Admin Berhasil');
-                return redirect()->route('dashboard.index')->with('pesan', 'berhasil login');
-            } else if ($roles === 'Pengurus LMY') {
+                return redirect()->route('dashboard.admin.index')->with('pesan', 'berhasil login');
+            } else if ($roles === 'Penyewa') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Pemilik Kos Berhasil');
-                return redirect()->route('dashboard.index')->with('pesan', 'berhasil login');
-            } else if ($roles === 'Kepala TPQ / RTQ') {
+                return redirect()->route('kos.search')->with('pesan', 'berhasil login');
+            } else if ($roles === 'Pemilik') {
                 $request->session()->regenerate();
-                Alert::success('info', 'Login Berhasil');
-                return redirect()->route('dashboard.index')->with('pesan', 'berhasil login');
+                Alert::success('info', 'Login Pemilik Berhasil');
+                return redirect()->route('dashboard.admin.index')->with('pesan', 'berhasil login');
             }
         }
 

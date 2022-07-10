@@ -32,18 +32,19 @@ function initMap() {
   var locationButton = document.createElement("button");
   locationButton.textContent = "Pin lokasi anda";
   locationButton.classList.add("maps-btn");
-  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton); // Listener
+  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton); // // Listener
+  // google.maps.event.addDomListener(mapDiv, "click", () => {
+  //     infoWindow.close();
+  // });
 
-  google.maps.event.addDomListener(mapDiv, "click", function () {
-    infoWindow.close();
-  });
   locationButton.addEventListener("click", function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        };
+        }; // reverse geocoding
+
         geocoder.geocode({
           location: pos
         }).then(function (response) {
@@ -52,17 +53,13 @@ function initMap() {
             infoWindow.setContent(response.results[0].formatted_address);
             infoWindow.open(map);
             map.setCenter(pos);
-            map.setZoom(15);
+            map.setZoom(17);
           } else {
             window.alert("No results found");
           }
         })["catch"](function (e) {
           return window.alert("Geocoder failed due to: " + e);
-        }); // infoWindow.setPosition(pos);
-        // infoWindow.setContent("Lokasi Anda");
-        // infoWindow.open(map);
-        // map.setCenter(pos);
-        // map.setZoom(15);
+        });
       }, function () {
         handleLocationError(true, infoWindow, map.getCenter());
       });
@@ -96,27 +93,6 @@ function createMarker(map, data) {
     markerInfoWindow.open(map, marker);
     map.setZoom(15);
     map.setCenter(marker.getPosition());
-  });
-} // reverse geocoding
-
-
-function geocodeLatLng(geocoder, map, infowindow, coordinate) {
-  geocoder.geocode({
-    location: latlng
-  }).then(function (response) {
-    if (response.results[0]) {
-      map.setZoom(11);
-      var marker = new google.maps.Marker({
-        position: latlng,
-        map: map
-      });
-      infowindow.setContent(response.results[0].formatted_address);
-      infowindow.open(map, marker);
-    } else {
-      window.alert("No results found");
-    }
-  })["catch"](function (e) {
-    return window.alert("Geocoder failed due to: " + e);
   });
 }
 

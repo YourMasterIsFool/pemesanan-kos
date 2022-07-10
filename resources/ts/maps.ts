@@ -26,10 +26,10 @@ function initMap(): void {
         locationButton
     );
 
-    // Listener
-    google.maps.event.addDomListener(mapDiv, "click", () => {
-        infoWindow.close();
-    });
+    // // Listener
+    // google.maps.event.addDomListener(mapDiv, "click", () => {
+    //     infoWindow.close();
+    // });
 
     locationButton.addEventListener("click", () => {
         if (navigator.geolocation) {
@@ -40,6 +40,7 @@ function initMap(): void {
                         lng: position.coords.longitude,
                     };
 
+                    // reverse geocoding
                     geocoder
                         .geocode({ location: pos })
                         .then((response) => {
@@ -48,7 +49,7 @@ function initMap(): void {
                                 infoWindow.setContent(response.results[0].formatted_address);
                                 infoWindow.open(map);
                                 map.setCenter(pos);
-                                map.setZoom(15);
+                                map.setZoom(17);
                             } else {
                                 window.alert("No results found");
                             }
@@ -56,12 +57,6 @@ function initMap(): void {
                         .catch((e) =>
                             window.alert("Geocoder failed due to: " + e)
                         );
-
-                    // infoWindow.setPosition(pos);
-                    // infoWindow.setContent("Lokasi Anda");
-                    // infoWindow.open(map);
-                    // map.setCenter(pos);
-                    // map.setZoom(15);
                 },
                 () => {
                     handleLocationError(true, infoWindow, map.getCenter()!);
@@ -102,33 +97,6 @@ function createMarker(map: google.maps.Map, data: any): void {
         map.setZoom(15);
         map.setCenter(marker.getPosition() as google.maps.LatLng);
     });
-}
-
-// reverse geocoding
-function geocodeLatLng(
-    geocoder: google.maps.Geocoder,
-    map: google.maps.Map,
-    infowindow: google.maps.InfoWindow,
-    coordinate: any
-) {
-    geocoder
-        .geocode({ location: latlng })
-        .then((response) => {
-            if (response.results[0]) {
-                map.setZoom(11);
-
-                const marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                });
-
-                infowindow.setContent(response.results[0].formatted_address);
-                infowindow.open(map, marker);
-            } else {
-                window.alert("No results found");
-            }
-        })
-        .catch((e) => window.alert("Geocoder failed due to: " + e));
 }
 
 function handleLocationError(

@@ -279,7 +279,7 @@ body::-webkit-scrollbar-thumb {
 }
 .sidebar .navigation ul li a {
     color: var(--color1);
-    font-size: 12px;
+    font-size: 14px;
 }
 .main-content {
     overflow-y: scroll;
@@ -322,6 +322,7 @@ body::-webkit-scrollbar-thumb {
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 } */
 
+
 .item {
     display: flex;
     flex-direction: column;
@@ -333,8 +334,9 @@ body::-webkit-scrollbar-thumb {
     background: var(--color4);
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.8s ease-out;
+    transition: max-height 0.3s ease-out;
     margin-top: 10px;
+    margin-left: 10px;
 }
 
 .submenu a {
@@ -381,20 +383,17 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* LMY */
-.content-tpq {
-    background-color: var(--color4);
-    padding: 20px;
-    width: 800px;
-    overflow-x: scroll;
-    max-width: 100%;
-}
-table th,
-table td {
+table th {
     color: var(--color1);
 }
-.tpqrtq {
-    margin-top: 0;
-    align-items: flex-start;
+table td {
+    color: var(--color4);
+}
+.table-container{
+    overflow-x: scroll;
+}
+.table-container table{
+    width: 100vw;
 }
 .header-table div {
     display: flex;

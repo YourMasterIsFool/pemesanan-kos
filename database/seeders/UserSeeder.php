@@ -25,12 +25,12 @@ class UserSeeder extends Seeder
         ]);
         $user_admin->roles()->attach($this->ROLE_ADMIN);
 
-        $user_pemilik = User::create([
-            'nama' => 'Pemilik User',
-            'email' => 'pemilik@gmail.com',
-            'nik' => '1234567',
-            'password' => Hash::make('pemilik')
-        ]);
-        $user_pemilik->roles()->attach($this->ROLE_PEMILIK);
+        // $user_pemilik = User::create([
+        //     'nama' => 'Pemilik User',
+        //     'email' => 'pemilik@gmail.com',
+        //     'nik' => '1234567',
+        //     'password' => Hash::make('pemilik')
+        // ]);
+        // $user_pemilik->roles()->attach($this->ROLE_PEMILIK);
     }
 }

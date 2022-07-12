@@ -3,6 +3,8 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DaftarPemilikController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,8 +39,18 @@ Route::prefix('account')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 
-Route::prefix('admin')->middleware(['auth'])->group(function(){
 
+
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.admin.index');
+    Route::prefix('daftarpemilik')->group(function(){
+        Route::get('/', [DaftarPemilikController::class, 'index'])->name('dashboard.daftarpemilik.index');
+        Route::get('/create', [DaftarPemilikController::class, 'createView'])->name('dashboard.daftarpemilik.createview');
+        Route::post('/create', [DaftarPemilikController::class, 'save'])->name('dashboard.daftarpemilik.save');
+        Route::get('/{id}/edit', [DaftarPemilikController::class, 'editView'])->name('dashboard.daftarpemilik.editview');
+        Route::post('/{id}/edit', [DaftarPemilikController::class, 'editSave'])->name('dashboard.daftarpemilik.editsave');
+        Route::delete('/{id}', [DaftarPemilikController::class, 'delete'])->name('dashboard.daftarpemilik.delete');
+    });
 });
 
 Route::prefix('pemilik')->middleware(['auth'])->group(function(){

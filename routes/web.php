@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DaftarPemilikController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +42,7 @@ Route::prefix('account')->group(function () {
 
 
 
-Route::prefix('admin')->middleware(['auth'])->group(function(){
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function(){
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.admin.index');
     Route::prefix('daftarpemilik')->group(function(){
         Route::get('/', [DaftarPemilikController::class, 'index'])->name('dashboard.daftarpemilik.index');
@@ -53,8 +54,17 @@ Route::prefix('admin')->middleware(['auth'])->group(function(){
     });
 });
 
-Route::prefix('pemilik')->middleware(['auth'])->group(function(){
-
+Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function(){
+    Route::get('/dashboard', [HomeController::class, 'indexPemilik'])->name('dashboard.pemilik.index');
+    Route::prefix('kos')->group(function(){
+        Route::get('/', [KosController::class, 'index'])->name('dashboard.kos.index');
+        Route::get('/view', [KosController::class, 'viewKosMap'])->name('dashboard.kos.map.view');
+        Route::get('/create', [KosController::class, 'createView'])->name('dashboard.kos.createview');
+        Route::post('/create', [KosController::class, 'save'])->name('dashboard.kos.save');
+        Route::get('/{id}/edit', [KosController::class, 'editView'])->name('dashboard.kos.editview');
+        Route::post('/{id}/edit', [KosController::class, 'editSave'])->name('dashboard.kos.editsave');
+        Route::delete('/{id}', [KosController::class, 'delete'])->name('dashboard.kos.delete');
+    });
 });
 
 Route::get('/heay', function () {

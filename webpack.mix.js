@@ -19,4 +19,5 @@ mix.browserSync({
 mix.js("resources/js/app.js", "public/js")
     .postCss("resources/css/app.css", "public/css")
     .typeScript("resources/ts/maps.ts", "public/maps")
-    .typeScript("resources/ts/detailKosMaps.ts", "public/maps");
+    .typeScript("resources/ts/detailKosMaps.ts", "public/maps")
+    .typeScript("resources/ts/mapsInsert.ts", "public/maps");

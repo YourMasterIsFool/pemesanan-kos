@@ -23,6 +23,8 @@ class CreateKosTable extends Migration
             $table->string('harga_sewa')->nullable();
             $table->string('jumlah_kamar')->nullable();
             $table->string('kamar_kosong')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->timestamps();
         });
     }

@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return view('dashboard.admin.index');
     }
+
+    public function indexPemilik()
+    {
+        return view('dashboard.admin.index-pemilik');
+    }
 }

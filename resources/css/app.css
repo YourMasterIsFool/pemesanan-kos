@@ -123,8 +123,8 @@ body::-webkit-scrollbar-thumb {
 }
 .btn2:hover,
 .btn4:hover {
-    background-color: var(--color3);
-    background-color: rgb(230, 230, 230);
+    color: var(--color2);
+    background-color: #303030;
 }
 
 .btn3,

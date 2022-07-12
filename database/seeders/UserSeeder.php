@@ -28,7 +28,8 @@ class UserSeeder extends Seeder
         // $user_pemilik = User::create([
         //     'nama' => 'Pemilik User',
         //     'email' => 'pemilik@gmail.com',
-        //     'nik' => '1234567',
+        //     'alamat' => 'Alamat pemilik kos',
+        //     'nomor_telepon' => '121212121212',
         //     'password' => Hash::make('pemilik')
         // ]);
         // $user_pemilik->roles()->attach($this->ROLE_PEMILIK);

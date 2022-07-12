@@ -4,9 +4,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it uses a non-standard name for the exports (exports).
 (() => {
 var exports = __webpack_exports__;
-/*!******************************!*\
-  !*** ./resources/ts/maps.ts ***!
-  \******************************/
+/*!************************************!*\
+  !*** ./resources/ts/mapsInsert.ts ***!
+  \************************************/
 
 
 exports.__esModule = true; // @ts-nocheck comment to disable all type checking in a TypeScript file
@@ -32,16 +32,19 @@ function initMap() {
   var locationButton = document.createElement("button");
   locationButton.textContent = "Pin lokasi anda";
   locationButton.classList.add("maps-btn");
+  locationButton.type = "button";
   map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton); // Configure the click listener.
 
   map.addListener("click", function (mapsMouseEvent) {
     // Close the current InfoWindow.
-    infoWindow.close();
-  }); // // Listener
-  // google.maps.event.addDomListener(mapDiv, "click", () => {
-  //     infoWindow.close();
-  // });
+    infoWindow.close(); // Create a new InfoWindow.
 
+    infoWindow = new google.maps.InfoWindow({
+      position: mapsMouseEvent.latLng
+    });
+    infoWindow.setContent(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
+    infoWindow.open(map);
+  });
   locationButton.addEventListener("click", function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -55,7 +58,7 @@ function initMap() {
         }).then(function (response) {
           if (response.results[0]) {
             infoWindow.setPosition(pos);
-            infoWindow.setContent(response.results[0].formatted_address);
+            infoWindow.setContent("\n <h6>Alamat: ".concat(response.results[0].formatted_address, "</h6>.\n                                    \n <h5>Latitude: ").concat(pos.lat, "</h5> \n                                    \n <h5>Longitude: ").concat(pos.lng, "</h5>"));
             infoWindow.open(map);
             map.setCenter(pos);
             map.setZoom(17);

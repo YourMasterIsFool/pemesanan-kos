@@ -1,18 +1,19 @@
 @extends('layouts.base')
 
 @section('title')
-    <title>Daftar Pemilik</title>
+    <title>Daftar Kos</title>
 @endsection
 
 @section('content')
     <div class="container">
-        <h2 class="black">Daftar Pemilik</h2>
+        <h2 class="black">Daftar Kos</h2>
         <div class="row" style="height: 100%">
             <div style="display: flex; justify-content: end; margin-bottom: 10px;">
-                <a href="{{ route('dashboard.daftarpemilik.createview') }}" class="btn1">Tambah Pemilik</a>
+                <a href="{{ route('dashboard.kos.createview') }}" style="margin-right: 10px;" class="btn1">Tambah Kos</a>
+                <a target="_blank" href="{{ route('dashboard.kos.map.view') }}" class="btn2">Lihat Kos</a>
             </div>
-            <div style="margin-top: 20px;" class="">
-                @if (count($pemilik) < 1)
+            <div style="margin-top: 20px;" class="table-container">
+                @if (count($kos) < 1)
                     <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                 @else
                     <table class="table">
@@ -22,38 +23,40 @@
                         <thead class="bg-4" style="color: white;">
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Telepon</th>
-                                <th scope="col">Alamat</th>
+                                <th scope="col">Nama Kos</th>
+                                <th scope="col">Jumlah Kamar</th>
+                                <th scope="col">Kamar Kosong</th>
+                                <th scope="col">Fasilitas</th>
+                                <th scope="col">Lokasi</th>
                                 <th scope="col">Edit</th>
                                 <th scope="col">Hapus</th>
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
-                            @foreach ($pemilik as $user)
-                                <tr>
+                            @foreach ($kos as $item)
+                                <tr style="text-align: start;">
                                     <td scope="row">{{ ++$i }}</td>
-                                    <td>{{ $user->nama }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->nomor_telepon }}</td>
-                                    <td>{{ $user->alamat }}</td>
+                                    <td>{{ $item->nama_kos }}</td>
+                                    <td>{{ $item->jumlah_kamar }}</td>
+                                    <td>{{ $item->kamar_kosong }}</td>
+                                    <td>{{ $item->fasilitas }}</td>
+                                    <td style="max-width: 200px;">{{ $item->alamat }}</td>
                                     <td>
-                                        <a href="{{ route('dashboard.daftarpemilik.editview', $user->id_user) }}">
+                                        <a href="{{ route('dashboard.kos.editview', $item->id) }}">
                                             <img style="width: 30px; margin-right: 10px;"
                                                 src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
                                         </a>
                                     </td>
 
                                     <td>
-                                        <a data-bs-toggle="modal" data-bs-target="#pemilikModal-{{$user->id_user}}"
+                                        <a data-bs-toggle="modal" data-bs-target="#kosModal-{{$item->id}}"
                                             href="" onclick="event.preventDefault();">
                                             <img style="width: 30px; margin-right: 10px;"
                                                 src="{{ asset('icons/ic_delete.svg') }}" alt="sf">
                                         </a>
 
-                                        <form id="hapus-pemilik-{{$user->id_user}}"
-                                            action="{{ route('dashboard.daftarpemilik.delete', $user->id_user) }}"
+                                        <form id="hapus-kos-{{$item->id}}"
+                                            action="{{ route('dashboard.kos.delete', $item->id) }}"
                                             method="POST" class="d-none">
                                             @csrf
                                             @method('DELETE')
@@ -61,12 +64,12 @@
                                     </td>
                                 </tr>
                                 <!-- Modal -->
-                                <div class="modal fade" id="pemilikModal-{{$user->id_user}}" tabindex="-1" aria-labelledby="pemilikModalLabel"
+                                <div class="modal fade" id="kosModal-{{$item->id}}" tabindex="-1" aria-labelledby="kosModalLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="pemilikModalLabel">Hapus Pemilik</h5>
+                                                <h5 class="modal-title" id="kosModalLabel">Hapus Kos</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
@@ -76,7 +79,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn2" data-bs-dismiss="modal">Batal</button>
                                                 <button type="button" class="btn1"
-                                                    onclick="document.getElementById('hapus-pemilik-{{$user->id_user}}').submit();">Hapus</button>
+                                                    onclick="document.getElementById('hapus-kos-{{$item->id}}').submit();">Hapus</button>
                                             </div>
                                         </div>
                                     </div>

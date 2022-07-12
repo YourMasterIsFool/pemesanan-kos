@@ -85,8 +85,8 @@ class DaftarPemilikController extends Controller
                 'nomor_telepon' => $request->no_telepon,
             ]);
 
-            Alert::success('info', 'Pemilik berhasil diupdate');
-            return redirect()->route('dashboard.daftarpemilik.index');
+            Alert::success('info', 'Pemilik berhasil update');
+        return redirect()->route('dashboard.daftarpemilik.index');
         }
     }
 

@@ -151,12 +151,12 @@ class AuthController extends Controller
                 return redirect()->route('dashboard.admin.index')->with('pesan', 'berhasil login');
             } else if ($roles === 'Penyewa') {
                 $request->session()->regenerate();
-                Alert::success('info', 'Login Pemilik Kos Berhasil');
+                Alert::success('info', 'Login Berhasil');
                 return redirect()->route('kos.search')->with('pesan', 'berhasil login');
             } else if ($roles === 'Pemilik') {
                 $request->session()->regenerate();
-                Alert::success('info', 'Login Pemilik Berhasil');
-                return redirect()->route('dashboard.admin.index')->with('pesan', 'berhasil login');
+                Alert::success('info', 'Login Pemilik Kos Berhasil');
+                return redirect()->route('dashboard.pemilik.index')->with('pesan', 'berhasil login');
             }
         }
 

@@ -21,21 +21,27 @@ function initMap(): void {
 
     locationButton.textContent = "Pin lokasi anda";
     locationButton.classList.add("maps-btn");
+    locationButton.type = "button";
 
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
         locationButton
     );
 
     // Configure the click listener.
-    map.addListener("click", (mapsMouseEvent) => {
+    map.addListener("click", (mapsMouseEvent: any) => {
         // Close the current InfoWindow.
         infoWindow.close();
+
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+            position: mapsMouseEvent.latLng,
+        });
+        infoWindow.setContent(
+            JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+        );
+        infoWindow.open(map);
     });
 
-    // // Listener
-    // google.maps.event.addDomListener(mapDiv, "click", () => {
-    //     infoWindow.close();
-    // });
 
     locationButton.addEventListener("click", () => {
         if (navigator.geolocation) {
@@ -53,7 +59,9 @@ function initMap(): void {
                             if (response.results[0]) {
                                 infoWindow.setPosition(pos);
                                 infoWindow.setContent(
-                                    response.results[0].formatted_address
+                                    `\n <h6>Alamat: ${response.results[0].formatted_address}</h6>.
+                                    \n <h5>Latitude: ${pos.lat}</h5> 
+                                    \n <h5>Longitude: ${pos.lng}</h5>`
                                 );
                                 infoWindow.open(map);
                                 map.setCenter(pos);

@@ -71,6 +71,27 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="tipe_kos" class="font-1">Tipe Kos</label>
+                                <select class="form-select @error('tipe_kos') is-invalid @enderror" name="tipe_kos"
+                                    aria-label="Default select example">
+                                    <option selected>Pilih tipe kos</option>
+                                    @foreach ($tipe_kos as $kos)
+                                        <option value="{{ $kos->id }}">{{ $kos->tipe }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('tipe_kos')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
                     </div>
 
 

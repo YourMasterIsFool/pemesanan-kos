@@ -22,7 +22,7 @@ function initMap() {
   var mapDiv = document.getElementById("map");
   var map = new google.maps.Map(mapDiv, {
     center: poliwangi,
-    zoom: 12,
+    zoom: 10,
     zoomControl: false,
     scaleControl: true
   });

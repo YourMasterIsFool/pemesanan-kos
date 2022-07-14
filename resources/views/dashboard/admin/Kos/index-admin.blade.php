@@ -8,9 +8,8 @@
     <div class="container">
         <h2 class="black">Daftar Kos</h2>
         <div class="row" style="height: 100%">
-            <div style="display: flex; justify-content: end; margin-bottom: 10px;">
-                <a href="{{ route('dashboard.kos.createview') }}" style="margin-right: 10px;" class="btn1">Tambah Kos</a>
-                <a target="_blank" href="{{ route('dashboard.kos.map.view') }}" class="btn2">Lihat Kos</a>
+            <div style="display: flex; justify-content: end; margin-bottom: 10px;">                
+                <a target="_blank" href="{{ route('dashboard.daftarmapkos.index') }}" class="btn2">Lihat Kos</a>
             </div>
             <div style="margin-top: 20px;" class="table-container">
                 @if (count($kos) < 1)
@@ -24,6 +23,7 @@
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">Nama Kos</th>
+                                <th scope="col">Nama Pemilik</th>
                                 <th scope="col">Tipe Kos</th>
                                 <th scope="col">Jumlah Kamar</th>
                                 <th scope="col">Kamar Kosong</th>
@@ -38,6 +38,7 @@
                                 <tr style="text-align: start;">
                                     <td scope="row">{{ ++$i }}</td>
                                     <td>{{ $item->nama_kos }}</td>
+                                    <td>{{ $item->nama_pemilik }}</td>
                                     <td>{{ $item->tipe }}</td>
                                     <td>{{ $item->jumlah_kamar }}</td>
                                     <td>{{ $item->kamar_kosong }}</td>

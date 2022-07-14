@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePemilikKosTable extends Migration
+class CreatePemesanansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreatePemilikKosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pemilik_kos', function (Blueprint $table) {
+        Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('users_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('kos_id')->nullable()->constrained('kos')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('tipe_kos_id')->nullable()->constrained('tipe_kos')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('status_id')->nullable()->constrained('statuses')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('tanggal_masuk')->nullable();
+            $table->integer('tanggal_keluar')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreatePemilikKosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pemilik_kos');
+        Schema::dropIfExists('pemesanans');
     }
 }

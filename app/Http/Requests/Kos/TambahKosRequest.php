@@ -35,6 +35,7 @@ class TambahKosRequest extends FormRequest
             'jumlah_kamar' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'tipe_kos' => 'required|numeric',
         ];
     }
 
@@ -51,6 +52,7 @@ class TambahKosRequest extends FormRequest
             'jumlah_kamar.required' => 'Jumlah kamar tidak boleh kosong',
             'latitude.required' => 'Latitude tidak boleh kosong',
             'longitude.required' => 'Longitude tidak boleh kosong',
+            'tipe_kos.numeric' => 'Tipe kos tidak boleh kosong',
         ];
     }
 }

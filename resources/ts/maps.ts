@@ -9,7 +9,7 @@ function initMap(): void {
     const mapDiv = document.getElementById("map") as HTMLElement;
     const map = new google.maps.Map(mapDiv, {
         center: poliwangi,
-        zoom: 12,
+        zoom: 10,
         zoomControl: false,
         scaleControl: true,
     });

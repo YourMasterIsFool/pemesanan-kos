@@ -38,21 +38,12 @@
 
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('admin/kos') || Request::is('admin/kos/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_house.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Daftar Kos</a>
-                        </div>
-                    </div>
-
-                </li>
-
-                <li class="item">
-                    <div class="nav_title_container">
-                        <div class="nav_title_icon">
-                            <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Pemesanan</a>
+                            <a class="nav_title" href="{{ route('dashboard.daftarkos.index') }}"
+                                style="margin-right: 20px;">Daftar Kos</a>
                         </div>
                     </div>
 
@@ -65,7 +56,15 @@
                             <a class="nav_title" href="" style="margin-right: 20px;">Pembayaran</a>
                         </div>
                     </div>
+                </li>
 
+                <li class="item">
+                    <div class="nav_title_container">
+                        <div class="nav_title_icon">
+                            <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
+                            <a class="nav_title" href="" style="margin-right: 20px;">Pemesanan</a>
+                        </div>
+                    </div>
                 </li>
 
                 <li class="item">
@@ -107,6 +106,34 @@
                             <img src="{{ asset('icons/ic_house.svg') }}" alt="sf">
                             <a class="nav_title" href="{{ route('dashboard.kos.index') }}"
                                 style="margin-right: 20px;">Kos</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="item {{ Request::is('pemilik/pemesanan') || Request::is('pemilik/pemesanan/*') ? 'on' : '' }}">
+                    <div class="nav_title_container">
+                        <div class="nav_title_icon">
+                            <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
+                            <a class="nav_title" href="{{route('pemilik.pemesanan.index')}}" style="margin-right: 20px;">Pemesanan <span
+                                    class="badge text-bg-secondary">4</span></a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="nav_title_container">
+                        <div class="nav_title_icon">
+                            <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
+                            <a class="nav_title" href="" style="margin-right: 20px;">Pembayaran</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="nav_title_container">
+                        <div class="nav_title_icon">
+                            <img src="{{ asset('icons/ic_address.svg') }}" alt="sf">
+                            <a class="nav_title" href="" style="margin-right: 20px;">Daftar Booking</a>
                         </div>
                     </div>
                 </li>

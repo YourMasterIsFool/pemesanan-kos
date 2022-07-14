@@ -1,19 +1,15 @@
 @extends('layouts.base')
 
 @section('title')
-    <title>Daftar Kos</title>
+    <title>Daftar Pesanan</title>
 @endsection
 
 @section('content')
     <div class="container">
-        <h2 class="black">Daftar Kos</h2>
+        <h2 class="black">Daftar Pesanan</h2>
         <div class="row" style="height: 100%">
-            <div style="display: flex; justify-content: end; margin-bottom: 10px;">
-                <a href="{{ route('dashboard.kos.createview') }}" style="margin-right: 10px;" class="btn1">Tambah Kos</a>
-                <a target="_blank" href="{{ route('dashboard.kos.map.view') }}" class="btn2">Lihat Kos</a>
-            </div>
             <div style="margin-top: 20px;" class="table-container">
-                @if (count($kos) < 1)
+                @if (false)
                     <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                 @else
                     <table class="table">
@@ -23,21 +19,22 @@
                         <thead class="bg-4" style="color: white;">
                             <tr>
                                 <th scope="col">No.</th>
+                                <th scope="col">Nama Pemesan</th>
                                 <th scope="col">Nama Kos</th>
-                                <th scope="col">Tipe Kos</th>
-                                <th scope="col">Jumlah Kamar</th>
-                                <th scope="col">Kamar Kosong</th>
-                                <th scope="col">Fasilitas</th>
-                                <th scope="col">Lokasi</th>
+                                <th scope="col">Jangka Penyewaan</th>
+                                <th scope="col">Tangal Masuk</th>
+                                <th scope="col">Tanggal Keluar</th>
+                                <th scope="col">Status Pesanan</th>
                                 <th scope="col">Edit</th>
                                 <th scope="col">Hapus</th>
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
-                            @foreach ($kos as $item)
+                            {{-- @foreach ($kos as $item)
                                 <tr style="text-align: start;">
                                     <td scope="row">{{ ++$i }}</td>
                                     <td>{{ $item->nama_kos }}</td>
+                                    <td>{{ $item->nama_pemilik }}</td>
                                     <td>{{ $item->tipe }}</td>
                                     <td>{{ $item->jumlah_kamar }}</td>
                                     <td>{{ $item->kamar_kosong }}</td>
@@ -86,7 +83,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 @endif

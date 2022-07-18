@@ -93,7 +93,7 @@
                 <li class="item {{ Request::is('pemilik/dashboard') || Request::is('pemilik/dashboard') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
-                            <img src="{{ asset('icons/ic_house.svg') }}" alt="sf">
+                            <img src="{{ asset('icons/ic_chart.svg') }}" alt="sf">
                             <a class="nav_title" href="{{ route('dashboard.pemilik.index') }}"
                                 style="margin-right: 20px;">Dashboard</a>
                         </div>

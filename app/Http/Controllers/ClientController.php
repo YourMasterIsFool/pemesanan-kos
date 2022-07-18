@@ -26,6 +26,21 @@ class ClientController extends Controller
         return view('dashboard.client.search', compact('kos'));
     }
 
+    public function profileView(){
+        return view('dashboard.client.profile');
+    }
+
+    public function bookingView(){
+        return view('dashboard.client.daftar-booking');
+    }
+
+    public function pembayaranView(){
+        return view('dashboard.client.pembayaran');
+    }
+    public function pemesananView(){
+        return view('dashboard.client.pemesanan');
+    }
+
     public function createTemplateItemMaps($kos)
     {
         return ['coordinate' => [

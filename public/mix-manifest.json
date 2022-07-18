@@ -3,5 +3,6 @@
     "/maps/maps.js": "/maps/maps.js",
     "/maps/detailKosMaps.js": "/maps/detailKosMaps.js",
     "/maps/mapsInsert.js": "/maps/mapsInsert.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/client.css": "/css/client.css"
 }

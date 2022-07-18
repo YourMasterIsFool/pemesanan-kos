@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\TipeKos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -20,7 +21,8 @@ class AuthController extends Controller
 
     public function registerView()
     {
-        return view('dashboard.auth.register');
+        $jenis_kelamin = TipeKos::all();
+        return view('dashboard.auth.register', compact('jenis_kelamin'));
     }
 
 
@@ -152,7 +154,7 @@ class AuthController extends Controller
             } else if ($roles === 'Penyewa') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Berhasil');
-                return redirect()->route('kos.search')->with('pesan', 'berhasil login');
+                return redirect()->route('welcome')->with('pesan', 'berhasil login');
             } else if ($roles === 'Pemilik') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Pemilik Kos Berhasil');

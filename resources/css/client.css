@@ -1,0 +1,84 @@
+/* Welcome */
+:root {
+    --color1: #fafafa;
+    --color2: #ff9f29;
+    --color3: #1a4d2e;
+    --color4: #3b3b3b;
+}
+.landing {
+    width: 100vw;
+    margin: 0 auto;
+    position: relative;
+    background-color: #fafafa;
+}
+.landing .client-welcome {
+   text-align: center;
+   background-color: var(--color1);
+   height: 100vh;
+   position: relative;
+}
+
+.landing .client-welcome div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.client-header {
+    width: 100%;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-color: var(--color1);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.client-title {
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+
+.client-profile {
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 50px);
+}
+
+.client-profile .left {
+    flex: 40%;
+    position: relative;
+    background-color: var(--color2);
+}
+.client-profile .left h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.client-profile .right {
+    flex: 60%;
+    background-color: var(--color1);
+}
+.client-navbar {
+    display: flex;
+    align-items: center;
+}
+.client-navbar ul {
+    margin-top: 10px;
+    display: flex;
+    width: 500px;
+    align-items: center;
+    justify-content: space-between;
+}
+.client-profile {
+    position: relative;
+    margin-top: 50px;
+}

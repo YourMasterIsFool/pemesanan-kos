@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pemesanan Kos</title>
+    <title>Profil</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -31,11 +31,15 @@
 <body class="antialiased">
     @include('sweetalert::alert')
 
-
-
     <div class="landing">
         <div class="client-header">
-            @include('dashboard.client.client-navbar')
+            <div class="client-navbar">
+                <ul>
+                    <a href="{{route('welcome')}}">Home</a>
+                    <a href="">Daftar Booking</a>
+                    <a href="">Pembayaran</a>
+                </ul>
+            </div>
             <div class="client-title">
                 <h5 style="color: black;">{{ Auth::user()->nama }}</h5>
                 <div class="dropdown" style="margin-left: 30px;">
@@ -61,14 +65,17 @@
                 </div>
             </div>
         </div>
-        <div class="client-welcome">
-           <div>
-            <h2 style="margin-bottom: 20px; font-weight: 700;">Selamat Datang di Website Pemesanan Kos</h2>
-            <h4 style="font-weight: 200; margin-bottom: 12px; ">Mulai cari kos anda sekarang</h4>
-            <a href="{{ route('kos.search') }}" class="btn1">Cari</a>
-           </div>
+
+        <div class="client-profile">
+            <div class="left">
+                <h2 class="font-1" style="font-weight: 500">Profil</h2>
+            </div>  
+            <div class="right">
+                right
+            </div>
         </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

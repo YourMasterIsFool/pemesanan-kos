@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pemesanan Kos</title>
+    <title>Pembayaran</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -63,9 +63,7 @@
         </div>
         <div class="client-welcome">
            <div>
-            <h2 style="margin-bottom: 20px; font-weight: 700;">Selamat Datang di Website Pemesanan Kos</h2>
-            <h4 style="font-weight: 200; margin-bottom: 12px; ">Mulai cari kos anda sekarang</h4>
-            <a href="{{ route('kos.search') }}" class="btn1">Cari</a>
+                pembayaran
            </div>
         </div>
     </div>

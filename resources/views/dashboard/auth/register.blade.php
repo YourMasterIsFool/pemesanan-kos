@@ -85,8 +85,9 @@
                                     <select class="form-select @error('jenis_kelamin') is-invalid @enderror"
                                         id="jenis_kelamin" name="jenis_kelamin" aria-label="Default select example">
                                         <option selected>Pilih Jenis Kelamin</option>
-                                        <option value="pria">Laki - Laki</option>
-                                        <option value="wanita">Perempuan</option>
+                                        @foreach ($jenis_kelamin as $kelamin)
+                                            <option value="{{ $kelamin->id }}">{{ $kelamin->tipe }}</option>
+                                        @endforeach
                                     </select>
 
                                     @error('jenis_kelamin')

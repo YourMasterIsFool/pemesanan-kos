@@ -29,6 +29,10 @@ Route::get('/home', function () {
 
 Route::prefix('client')->middleware(['auth'])->group(function () {
     Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
+    Route::get('/profil', [ClientController::class, 'profileView'])->name('client.profile');
+    Route::get('/booking', [ClientController::class, 'bookingView'])->name('client.booking');
+    Route::get('/pembayaran', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
+    Route::get('/pemesanan', [ClientController::class, 'pemesananView'])->name('client.pemesanan');
 });
 
 Route::prefix('account')->group(function () {

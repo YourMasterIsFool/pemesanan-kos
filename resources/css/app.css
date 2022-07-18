@@ -300,6 +300,11 @@ body::-webkit-scrollbar-thumb {
     height: 40px;
     justify-content: space-evenly;
 }
+.account-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* home */
 .dashboard .home .content {
@@ -433,20 +438,6 @@ table td {
     margin: 10px;
 }
 
-/* Welcome */
-.landing {
-    width: 100vw;
-    height: 100vh;
-    margin: 0 auto;
-    position: relative;
-}
-.landing div {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
 
 .maps-search {
     width: 100vw;

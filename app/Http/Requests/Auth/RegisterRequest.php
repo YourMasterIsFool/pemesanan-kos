@@ -30,7 +30,7 @@ class RegisterRequest extends FormRequest
             'no_telepon' => 'required',
             'password' => 'required',
             'ktp' => 'required',
-            'jenis_kelamin' => 'string',
+            'jenis_kelamin' => 'required|numeric',
             'email' => 'required|email:rfc,dns|unique:users,email',
         ];
     }
@@ -43,7 +43,7 @@ class RegisterRequest extends FormRequest
             'nik.unique' => 'Nik sudah digunakan',
             'alamat.required' => 'Alamat tidak boleh kosong',
             'ktp.required' => 'File KTP tidak boleh kosong',
-            'jenis_kelamin.string' => 'Jenis Kelamin tidak boleh kosong',
+            'jenis_kelamin.numeric' => 'Jenis Kelamin tidak boleh kosong',
             'password.required' => 'Password tidak boleh kosong',
             'no_telepon.required' => 'Nomor Telepon tidak boleh kosong',
             'email.email' => 'Format email tidak valid',

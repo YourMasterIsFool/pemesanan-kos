@@ -33,13 +33,7 @@
 
     <div class="landing">
         <div class="client-header">
-            <div class="client-navbar">
-                <ul>
-                    <a href="{{route('welcome')}}">Home</a>
-                    <a href="">Daftar Booking</a>
-                    <a href="">Pembayaran</a>
-                </ul>
-            </div>
+            @include('dashboard.client.client-navbar')
             <div class="client-title">
                 <h5 style="color: black;">{{ Auth::user()->nama }}</h5>
                 <div class="dropdown" style="margin-left: 30px;">

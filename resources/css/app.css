@@ -300,7 +300,7 @@ body::-webkit-scrollbar-thumb {
     height: 40px;
     justify-content: space-evenly;
 }
-.account-title{
+.account-title {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -326,7 +326,6 @@ body::-webkit-scrollbar-thumb {
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 } */
-
 
 .item {
     display: flex;
@@ -394,10 +393,10 @@ table th {
 table td {
     color: var(--color4);
 }
-.table-container{
+.table-container {
     overflow-x: scroll;
 }
-.table-container table{
+.table-container table {
     width: 100vw;
 }
 .header-table div {
@@ -438,11 +437,18 @@ table td {
     margin: 10px;
 }
 
-
-.maps-search {
+.maps-search,
+.detail-maps-search {
     width: 100vw;
     height: 100vh;
     display: flex;
+}
+.detail-maps-search .left {
+    flex: 60%;
+}
+.detail-maps-search .right {
+    flex: 40%;
+    background-color: #fafafa;
 }
 .maps-search .left {
     height: 100%;
@@ -470,10 +476,80 @@ table td {
     margin-top: 10px;
     margin-bottom: 5px;
     font-weight: 500;
+    font-size: 16px;
 }
 .maps-item .detail {
     margin-top: 10px;
     color: rgb(77, 77, 255);
     font-weight: bold;
     display: inline-block;
+}
+.maps-item .tipe {
+    font-weight: 400;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Detail Kos */
+.detail-content {
+    height: 100%;
+}
+
+.detail-item {
+    display: flex;
+    width: 100%;
+}
+.detail-item h2 {
+    font-size: 20px;
+}
+.detail-item.small h2,
+.detail-foto h2 {
+    font-size: 16px;
+}
+.detail-item.small {
+    flex-direction: column;
+    margin-top: 20px;
+}
+.detail-item.small .value {
+    margin-left: 0;
+    font-weight: bold;
+    color: #6b6b6b;
+    font-size: 15px;
+}
+.detail-maps-search .right {
+    padding: 30px;
+}
+.detail-item .title {
+    width: 150px;
+}
+.detail-item .value {
+    margin-left: 10px;
+}
+.detail-body {
+    margin-top: 30px;
+    display: flex;
+}
+.detail-body .left {
+    margin-right: 12px;
+}
+.detail-maps-search .right {
+    overflow-y: scroll;
+}
+.detail-foto {
+    margin-top: 20px;
+}
+.detail-foto .gambar {
+    display: flex;
+    justify-content: space-between;
+}
+.detail-foto img {
+    width: 120px;
+    height: 120px;
+}
+.detail-content .booking {
+    text-align: end;
+    display: flex;
+    margin-top: 70px;
+    padding-bottom: 20px;
+    justify-content: end;
 }

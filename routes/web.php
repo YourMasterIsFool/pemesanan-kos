@@ -28,11 +28,25 @@ Route::get('/home', function () {
 })->name('welcome')->middleware(['auth']);
 
 Route::prefix('client')->middleware(['auth'])->group(function () {
-    Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
+
     Route::get('/profil', [ClientController::class, 'profileView'])->name('client.profile');
-    Route::get('/booking', [ClientController::class, 'bookingView'])->name('client.booking');
-    Route::get('/pembayaran', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
-    Route::get('/pemesanan', [ClientController::class, 'pemesananView'])->name('client.pemesanan');
+
+    Route::prefix('booking')->group(function () {
+        Route::get('/', [ClientController::class, 'bookingView'])->name('client.booking');
+    });
+
+    Route::prefix('pemesanan')->group(function () {
+        Route::get('/', [ClientController::class, 'pemesananView'])->name('client.pemesanan');
+    });
+    
+    Route::prefix('pembayaran')->group(function () {
+        Route::get('/', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
+    });
+
+    Route::prefix('kos')->group(function () {
+        Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
+        Route::get('/{id}', [ClientController::class, 'detailKosById'])->name('kos.detail');
+    });
 });
 
 Route::prefix('account')->group(function () {
@@ -47,13 +61,13 @@ Route::prefix('account')->group(function () {
 
 
 
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function(){
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.admin.index');
-    Route::prefix('kos')->group(function(){
+    Route::prefix('kos')->group(function () {
         Route::get('/', [KosController::class, 'kosAdminView'])->name('dashboard.daftarkos.index');
         Route::get('/maps', [KosController::class, 'kosAdminMapView'])->name('dashboard.daftarmapkos.index');
     });
-    Route::prefix('daftarpemilik')->group(function(){
+    Route::prefix('daftarpemilik')->group(function () {
         Route::get('/', [DaftarPemilikController::class, 'index'])->name('dashboard.daftarpemilik.index');
         Route::get('/create', [DaftarPemilikController::class, 'createView'])->name('dashboard.daftarpemilik.createview');
         Route::post('/create', [DaftarPemilikController::class, 'save'])->name('dashboard.daftarpemilik.save');
@@ -63,9 +77,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function(){
     });
 });
 
-Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function(){
+Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'indexPemilik'])->name('dashboard.pemilik.index');
-    Route::prefix('kos')->group(function(){
+    Route::prefix('kos')->group(function () {
         Route::get('/', [KosController::class, 'index'])->name('dashboard.kos.index');
         Route::get('/view', [KosController::class, 'viewKosMap'])->name('dashboard.kos.map.view');
         Route::get('/create', [KosController::class, 'createView'])->name('dashboard.kos.createview');
@@ -75,15 +89,15 @@ Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function(){
         Route::delete('/{id}', [KosController::class, 'delete'])->name('dashboard.kos.delete');
     });
 
-    Route::prefix('pemesanan')->group(function(){
+    Route::prefix('pemesanan')->group(function () {
         Route::get('/', [PemesananController::class, 'index'])->name('pemilik.pemesanan.index');
         Route::get('/{id}', [PemesananController::class, 'detail'])->name('pemilik.pemesanan.detail');
     });
 
-    Route::prefix('pembayaran')->group(function(){
+    Route::prefix('pembayaran')->group(function () {
         Route::get('/', [PemesananController::class, 'index'])->name('pemilik.pembayaran.index');
         Route::get('/{id}', [PemesananController::class, 'detail'])->name('pemilik.pembayaran.detail');
-    }); 
+    });
 });
 
 Route::get('/heay', function () {

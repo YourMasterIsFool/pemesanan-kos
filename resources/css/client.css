@@ -5,6 +5,9 @@
     --color3: #1a4d2e;
     --color4: #3b3b3b;
 }
+body.client{
+    background-color: #fafafa;
+}
 .landing {
     width: 100vw;
     margin: 0 auto;
@@ -12,13 +15,13 @@
     background-color: #fafafa;
 }
 .landing .client-welcome {
-   text-align: center;
-   background-color: var(--color1);
-   height: 100vh;
-   position: relative;
+    text-align: center;
+    background-color: var(--color1);
+    height: 100vh;
+    position: relative;
 }
 
-.landing .client-welcome div{
+.landing .client-welcome div {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -37,7 +40,8 @@
     width: 100%;
     z-index: 2;
     background-color: var(--color1);
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+        rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 .client-title {
     display: flex;
@@ -81,4 +85,18 @@
 .client-profile {
     position: relative;
     margin-top: 50px;
+}
+
+.client-checkout {
+    text-align: center;
+    background-color: var(--color1);
+    height: 100vh;
+    position: relative;
+    margin-top: 100px;
+}
+.client-checkout .content{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }

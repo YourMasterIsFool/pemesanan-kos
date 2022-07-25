@@ -28,7 +28,7 @@
     </style>
 </head>
 
-<body class="antialiased">
+<body class="client">
     @include('sweetalert::alert')
 
 

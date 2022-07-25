@@ -9,12 +9,14 @@ function initMap(): void {
     const mapDiv = document.getElementById("map") as HTMLElement;
     const map = new google.maps.Map(mapDiv, {
         center: poliwangi,
-        zoom: 10,
+        zoom: 15,
         zoomControl: false,
         scaleControl: true,
     });
     infoWindow = new google.maps.InfoWindow();
     geocoder = new google.maps.Geocoder();
+
+    createMarker(map, kos);
 
     // Add Pin Current Location Button
     const locationButton = document.createElement("button");
@@ -71,9 +73,7 @@ function initMap(): void {
         }
     });
 
-    for (let dataKos in kos) {
-        createMarker(map, kos[dataKos]);
-    }
+    
 
     // console.log(kos);
     // console.log(coordinate);
@@ -85,8 +85,8 @@ function createMarker(map: google.maps.Map, data: any): void {
 
     const marker = new google.maps.Marker({
         position: {
-            lat: data.coordinate.latitude,
-            lng: data.coordinate.longitude,
+            lat: +data.coordinate.latitude,
+            lng: +data.coordinate.longitude,
         },
         map: map,
         icon: image,
@@ -95,11 +95,8 @@ function createMarker(map: google.maps.Map, data: any): void {
         content: data.template,
     });
 
-    google.maps.event.addListener(marker, "click", () => {
-        markerInfoWindow.open(map, marker);
-        map.setZoom(15);
-        map.setCenter(marker.getPosition() as google.maps.LatLng);
-    });
+    map.setCenter(marker.getPosition() as google.maps.LatLng);
+    map.setZoom(17);
 }
 
 function handleLocationError(

@@ -28,10 +28,8 @@
     </style>
 </head>
 
-<body class="antialiased">
+<body class="client">
     @include('sweetalert::alert')
-
-
 
     <div class="landing">
         <div class="client-header">
@@ -50,7 +48,7 @@
                             Logout
                         </a>
 
-                        <a class="dropdown-item" href="{{route('client.profile')}}">
+                        <a class="dropdown-item" href="{{ route('client.profile') }}">
                             Profil
                         </a>
 
@@ -61,30 +59,129 @@
                 </div>
             </div>
         </div>
-        <div class="client-welcome">
-           <div>
-                pemesanan
-           </div>
-        </div>
-    </div>
+        <div class="container client-checkout">
+            <div class="row justify-content-center">
+                <div style="margin-top: 20px;" class="col content">
+                    @if (count($pesanan) < 1)
+                        <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
+                    @else
+                        <h2 style="margin-bottom: 20px;">Pesanan kos anda</h2>
+                        <table class="table" style="width: 1100px;">
+                            @php
+                                $i = 0;
+                            @endphp
+                            <thead class="bg-4" style="color: white;">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Nama Kos</th>
+                                    <th scope="col">Tanggal Masuk</th>
+                                    <th scope="col">Tanggal Keluar</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Booking</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Batal</th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: white;">
+                                @foreach ($pesanan as $order)
+                                    <tr>
+                                        <td scope="row">{{ ++$i }}</td>
+                                        <td>{{ $order->nama_kos }}</td>
+                                        <td>{{ $order->tanggal_masuk ?? 'kosong' }}</td>
+                                        <td>{{ $order->tanggal_keluar ?? 'kosong' }}</td>
+                                        <td>{{ $order->status }}</td>
+                                        <td>
+                                            <a data-bs-toggle="modal" href=""
+                                                data-bs-target="#bookingModal-{{ $order->id_pesanan }}"
+                                                onclick="event.preventDefault();">
+                                                <img style="width: 30px; margin-right: 10px;"
+                                                    src="{{ asset('icons/ic_check.svg') }}" alt="sf">
+                                            </a>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Logout</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Logout sekarang?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn2" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn1"
-                        onclick="document.getElementById('logout-form').submit();">Logout</button>
+                                            <form id="booking-pesanan-{{ $order->id_pesanan }}"
+                                                action="{{ route('client.pemesanan.edit.booking', $order->id_pesanan) }}"
+                                                method="POST" class="d-none">
+                                                @csrf
+                                                @method('POST')
+                                            </form>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('client.pemesanan.edit.view', $order->id_pesanan) }}">
+                                                <img style="width: 30px; margin-right: 10px;"
+                                                    src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a data-bs-toggle="modal" href=""
+                                                data-bs-target="#pesananModal-{{ $order->id_pesanan }}"
+                                                onclick="event.preventDefault();">
+                                                <img style="width: 30px; margin-right: 10px;"
+                                                    src="{{ asset('icons/ic_delete.svg') }}" alt="sf">
+                                            </a>
+
+                                            <form id="hapus-pesanan-{{ $order->id_pesanan }}"
+                                                action="{{ route('client.pemesanan.batal', $order->id_pesanan) }}"
+                                                method="POST" class="d-none">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
+                                    </tr>
+
+                                    <div class="modal fade" id="bookingModal-{{ $order->id_pesanan }}" tabindex="-1"
+                                        aria-labelledby="booking-modal-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="booking-modal-label">Booking Pesanan
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Booking sekarang?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn2"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn1"
+                                                        onclick="document.getElementById('booking-pesanan-{{ $order->id_pesanan }}').submit();">Booking</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="pesananModal-{{ $order->id_pesanan }}"
+                                        tabindex="-1" aria-labelledby="pesanan-modal-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="pesanan-modal-label">Hapus Pesanan
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Hapus sekarang?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn2"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn1"
+                                                        onclick="document.getElementById('hapus-pesanan-{{ $order->id_pesanan }}').submit();">Batalkan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
+
         </div>
     </div>
 </body>

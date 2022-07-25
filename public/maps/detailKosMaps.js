@@ -22,12 +22,13 @@ function initMap() {
   var mapDiv = document.getElementById("map");
   var map = new google.maps.Map(mapDiv, {
     center: poliwangi,
-    zoom: 10,
+    zoom: 15,
     zoomControl: false,
     scaleControl: true
   });
   infoWindow = new google.maps.InfoWindow();
-  geocoder = new google.maps.Geocoder(); // Add Pin Current Location Button
+  geocoder = new google.maps.Geocoder();
+  createMarker(map, kos); // Add Pin Current Location Button
 
   var locationButton = document.createElement("button");
   locationButton.textContent = "Pin lokasi anda";
@@ -68,21 +69,16 @@ function initMap() {
       // Browser doesn't support Geolocation
       handleLocationError(false, infoWindow, map.getCenter());
     }
-  });
-
-  for (var dataKos in kos) {
-    createMarker(map, kos[dataKos]);
-  } // console.log(kos);
+  }); // console.log(kos);
   // console.log(coordinate);
-
 }
 
 function createMarker(map, data) {
   var image = "https://firebasestorage.googleapis.com/v0/b/firestore-33f9a.appspot.com/o/house-icon%20(1).png?alt=media&token=412e3e10-8d20-4bdb-97c3-a4854cbb699c";
   var marker = new google.maps.Marker({
     position: {
-      lat: data.coordinate.latitude,
-      lng: data.coordinate.longitude
+      lat: +data.coordinate.latitude,
+      lng: +data.coordinate.longitude
     },
     map: map,
     icon: image
@@ -90,11 +86,8 @@ function createMarker(map, data) {
   var markerInfoWindow = new google.maps.InfoWindow({
     content: data.template
   });
-  google.maps.event.addListener(marker, "click", function () {
-    markerInfoWindow.open(map, marker);
-    map.setZoom(15);
-    map.setCenter(marker.getPosition());
-  });
+  map.setCenter(marker.getPosition());
+  map.setZoom(17);
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {

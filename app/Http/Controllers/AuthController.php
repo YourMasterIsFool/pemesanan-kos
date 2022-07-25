@@ -154,7 +154,7 @@ class AuthController extends Controller
             } else if ($roles === 'Penyewa') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Berhasil');
-                return redirect()->route('welcome')->with('pesan', 'berhasil login');
+                return redirect()->route('client.welcome')->with('pesan', 'berhasil login');
             } else if ($roles === 'Pemilik') {
                 $request->session()->regenerate();
                 Alert::success('info', 'Login Pemilik Kos Berhasil');

@@ -23,11 +23,10 @@ Route::get('/', function () {
     return redirect()->route('user.login.view');
 });
 
-Route::get('/home', function () {
-    return view('welcome');
-})->name('welcome')->middleware(['auth']);
+
 
 Route::prefix('client')->middleware(['auth'])->group(function () {
+    Route::get('/home', [ClientController::class, 'homeView'])->name('client.welcome');
 
     Route::get('/profil', [ClientController::class, 'profileView'])->name('client.profile');
 
@@ -37,8 +36,12 @@ Route::prefix('client')->middleware(['auth'])->group(function () {
 
     Route::prefix('pemesanan')->group(function () {
         Route::get('/', [ClientController::class, 'pemesananView'])->name('client.pemesanan');
+        Route::get('/{id}/edit', [ClientController::class, 'editPesananView'])->name('client.pemesanan.edit.view');
+        Route::post('/{id}/edit', [ClientController::class, 'editPesananSave'])->name('client.pemesanan.edit.save');
+        Route::post('/{id}/booking', [ClientController::class, 'bookingPesanan'])->name('client.pemesanan.edit.booking');
+        Route::delete('/batal/{id}', [ClientController::class, 'batalkanPesanan'])->name('client.pemesanan.batal');
     });
-    
+
     Route::prefix('pembayaran')->group(function () {
         Route::get('/', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
     });
@@ -46,6 +49,7 @@ Route::prefix('client')->middleware(['auth'])->group(function () {
     Route::prefix('kos')->group(function () {
         Route::get('/search', [ClientController::class, 'index'])->name('kos.search');
         Route::get('/{id}', [ClientController::class, 'detailKosById'])->name('kos.detail');
+        Route::post('/{id}', [ClientController::class, 'pesanKos'])->name('kos.pesan');
     });
 });
 

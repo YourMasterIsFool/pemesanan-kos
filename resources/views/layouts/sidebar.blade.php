@@ -114,8 +114,13 @@
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
-                            <a class="nav_title" href="{{route('pemilik.pemesanan.index')}}" style="margin-right: 20px;">Pemesanan <span
-                                    class="badge text-bg-secondary">4</span></a>
+                            <a class="nav_title" href="{{ route('pemilik.pemesanan.index') }}"
+                                style="margin-right: 20px;">Pemesanan
+                                @if (isset($total_pesanan) && $total_pesanan !== 0)
+                                    <span class="badge text-bg-secondary">{{ $total_pesanan }}</span>
+                                @else
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </li>

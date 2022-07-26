@@ -9,7 +9,7 @@
         <h2 class="black">Daftar Pesanan</h2>
         <div class="row" style="height: 100%">
             <div style="margin-top: 20px;" class="table-container">
-                @if (false)
+                @if (count($pesanan) < 1)
                     <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                 @else
                     <table class="table">
@@ -25,29 +25,28 @@
                                 <th scope="col">Tangal Masuk</th>
                                 <th scope="col">Tanggal Keluar</th>
                                 <th scope="col">Status Pesanan</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Hapus</th>
+                                {{-- <th scope="col">Edit</th>
+                                <th scope="col">Hapus</th> --}}
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
-                            {{-- @foreach ($kos as $item)
+                            @foreach ($pesanan as $item)
                                 <tr style="text-align: start;">
                                     <td scope="row">{{ ++$i }}</td>
+                                    <td>{{ $item->nama }}</td>
                                     <td>{{ $item->nama_kos }}</td>
-                                    <td>{{ $item->nama_pemilik }}</td>
-                                    <td>{{ $item->tipe }}</td>
-                                    <td>{{ $item->jumlah_kamar }}</td>
-                                    <td>{{ $item->kamar_kosong }}</td>
-                                    <td>{{ $item->fasilitas }}</td>
-                                    <td style="max-width: 200px;">{{ $item->alamat }}</td>
-                                    <td>
+                                    <td>{{ $item->durasi }}</td>
+                                    <td>{{ $item->tanggal_masuk }}</td>
+                                    <td>{{ $item->tanggal_keluar }}</td>
+                                    <td>{{ $item->status }}</td>
+                                    {{-- <td>
                                         <a href="{{ route('dashboard.kos.editview', $item->id) }}">
                                             <img style="width: 30px; margin-right: 10px;"
                                                 src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
                                         </a>
-                                    </td>
+                                    </td> --}}
 
-                                    <td>
+                                    {{-- <td>
                                         <a data-bs-toggle="modal" data-bs-target="#kosModal-{{$item->id}}"
                                             href="" onclick="event.preventDefault();">
                                             <img style="width: 30px; margin-right: 10px;"
@@ -60,10 +59,10 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 <!-- Modal -->
-                                <div class="modal fade" id="kosModal-{{$item->id}}" tabindex="-1" aria-labelledby="kosModalLabel"
+                                {{-- <div class="modal fade" id="kosModal-{{$item->id}}" tabindex="-1" aria-labelledby="kosModalLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -82,8 +81,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach --}}
+                                </div> --}}
+                            @endforeach
                         </tbody>
                     </table>
                 @endif

@@ -84,9 +84,9 @@ function initMap(): void {
         }
     });
 
-    for (let dataKos in kos) {
-        createMarker(map, kos[dataKos]);
-    }
+    // for (let dataKos in kos) {
+    //     createMarker(map, kos[dataKos]);
+    // }
 
     // console.log(kos);
     // console.log(coordinate);

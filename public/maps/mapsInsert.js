@@ -75,13 +75,11 @@ function initMap() {
       // Browser doesn't support Geolocation
       handleLocationError(false, infoWindow, map.getCenter());
     }
-  });
-
-  for (var dataKos in kos) {
-    createMarker(map, kos[dataKos]);
-  } // console.log(kos);
+  }); // for (let dataKos in kos) {
+  //     createMarker(map, kos[dataKos]);
+  // }
+  // console.log(kos);
   // console.log(coordinate);
-
 }
 
 function createMarker(map, data) {

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pemesanan</title>
+    <title>Pembayaran</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -62,10 +62,10 @@
         <div class="container client-checkout">
             <div class="row justify-content-center">
                 <div style="margin-top: 20px;" class="col content">
-                    @if (count($pesanan) < 1)
+                    @if (count($pembayaran) < 1)
                         <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                     @else
-                        <h2 style="margin-bottom: 20px;">Pesanan kos anda</h2>
+                        <h2 style="margin-bottom: 20px;">Pembayaran Anda</h2>
                         <table class="table" style="width: 1100px;">
                             @php
                                 $i = 0;
@@ -76,35 +76,19 @@
                                     <th scope="col">Nama Kos</th>
                                     <th scope="col">Tanggal Masuk</th>
                                     <th scope="col">Tanggal Keluar</th>
-                                    {{-- <th scope="col">Status</th> --}}
-                                    <th scope="col">Booking</th>
-                                    <th scope="col">Edit</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Selesaikan Pembayaran</th>
                                     <th scope="col">Batal</th>
                                 </tr>
                             </thead>
                             <tbody style="background-color: white;">
-                                @foreach ($pesanan as $order)
+                                @foreach ($pembayaran as $order)
                                     <tr>
                                         <td scope="row">{{ ++$i }}</td>
                                         <td>{{ $order->nama_kos }}</td>
                                         <td>{{ $order->tanggal_masuk ?? 'kosong' }}</td>
                                         <td>{{ $order->tanggal_keluar ?? 'kosong' }}</td>
-                                        {{-- <td>{{ $order->status }}</td> --}}
-                                        <td>
-                                            <a data-bs-toggle="modal" href=""
-                                                data-bs-target="#bookingModal-{{ $order->id_pesanan }}"
-                                                onclick="event.preventDefault();">
-                                                <img style="width: 30px; margin-right: 10px;"
-                                                    src="{{ asset('icons/ic_check.svg') }}" alt="sf">
-                                            </a>
-
-                                            <form id="booking-pesanan-{{ $order->id_pesanan }}"
-                                                action="{{ route('client.pemesanan.edit.booking', $order->id_pesanan) }}"
-                                                method="POST" class="d-none">
-                                                @csrf
-                                                @method('POST')
-                                            </form>
-                                        </td>
+                                        <td>{{ $order->status }}</td>
 
                                         <td>
                                             <a href="{{ route('client.pemesanan.edit.view', $order->id_pesanan) }}">
@@ -130,28 +114,6 @@
                                         </td>
                                     </tr>
 
-                                    <div class="modal fade" id="bookingModal-{{ $order->id_pesanan }}" tabindex="-1"
-                                        aria-labelledby="booking-modal-label" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="booking-modal-label">Booking Pesanan
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Booking sekarang?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn2"
-                                                        data-bs-dismiss="modal">Batal</button>
-                                                    <button type="button" class="btn1"
-                                                        onclick="document.getElementById('booking-pesanan-{{ $order->id_pesanan }}').submit();">Booking</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div class="modal fade" id="pesananModal-{{ $order->id_pesanan }}"
                                         tabindex="-1" aria-labelledby="pesanan-modal-label" aria-hidden="true">

@@ -18,8 +18,8 @@ class CreatePemesanansTable extends Migration
             $table->foreignId('users_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('kos_id')->nullable()->constrained('kos')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('status_id')->nullable()->constrained('statuses')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('tanggal_masuk')->nullable();
-            $table->integer('tanggal_keluar')->nullable();
+            $table->bigInteger('tanggal_masuk')->nullable();
+            $table->bigInteger('tanggal_keluar')->nullable();
             $table->timestamps();
         });
     }

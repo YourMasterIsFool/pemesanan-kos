@@ -101,8 +101,9 @@ class KosController extends Controller
             'longitude' => $request->longitude
         ]);
 
-        $filePath = Storage::disk('local')->put('kos', $request->foto);
-        $fileName = explode('/', $filePath)[1];
+        $fileName = $request->foto->getClientOriginalName();
+        $path_foto_kos = public_path() . "/kos";
+        $request->foto->move($path_foto_kos, $fileName);
 
         FotoKos::create([
             'foto' => $fileName,

@@ -90,8 +90,9 @@ class AuthController extends Controller
         
         $validated['password'] = Hash::make($validated['password']);
 
-        $filePath = Storage::disk('local')->put('ktp', $validated['ktp']);
-        $fileName = explode('/', $filePath)[1];
+        $fileName = $request->ktp->getClientOriginalName();
+        $path_foto_ktp = public_path() . "/ktp";
+        $request->ktp->move($path_foto_ktp, $fileName);
 
         $user = User::create([
             'nama' => $validated['nama'],
@@ -108,7 +109,7 @@ class AuthController extends Controller
         auth()->login($user);
 
         Alert::success('info', 'Registrasi Berhasil');
-        return redirect()->route('welcome')->with('pesan', 'berhasil register');
+        return redirect()->route('client.welcome')->with('pesan', 'berhasil login');
     }
 
     public function logout(Request $request)

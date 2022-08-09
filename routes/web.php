@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DaftarPemilikController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KosController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PemesananController;
 
 /*
@@ -44,6 +45,7 @@ Route::prefix('client')->middleware(['auth'])->group(function () {
 
     Route::prefix('pembayaran')->group(function () {
         Route::get('/', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
+        Route::get('/batal/{id}', [ClientController::class, 'batalkanPesanan'])->name('client.pembayaran.batal');
     });
 
     Route::prefix('kos')->group(function () {
@@ -99,8 +101,8 @@ Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function () {
     });
 
     Route::prefix('pembayaran')->group(function () {
-        Route::get('/', [PemesananController::class, 'index'])->name('pemilik.pembayaran.index');
-        Route::get('/{id}', [PemesananController::class, 'detail'])->name('pemilik.pembayaran.detail');
+        Route::get('/', [PembayaranController::class, 'index'])->name('pemilik.pembayaran.index');
+        Route::get('/{id}', [PembayaranController::class, 'detail'])->name('pemilik.pembayaran.detail');
     });
 });
 

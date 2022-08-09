@@ -24,36 +24,69 @@ class ClientController extends Controller
     public function profileView(Request $request)
     {
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        return view('dashboard.client.profile', compact('total_pesanan'));
+        return view('dashboard.client.profile', compact('total_pesanan', 'total_pembayaran'));
     }
 
     public function homeView(Request $request)
     {
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        return view('welcome', compact('total_pesanan'));
+        return view('welcome', compact('total_pesanan', 'total_pembayaran'));
     }
 
     // BOOKING
     public function bookingView(Request $request)
     {
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        return view('dashboard.client.daftar-booking', compact('total_pesanan'));
+        return view('dashboard.client.daftar-booking', compact('total_pesanan', 'total_pembayaran'));
     }
 
     // PEMBAYARAN
     public function pembayaranView(Request $request)
     {
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        return view('dashboard.client.pembayaran', compact('total_pesanan'));
+        $pembayaran = DB::table('pemesanans')
+            ->join('users', 'pemesanans.users_id', '=', 'users.id')
+            ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')
+            ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
+            ->select(
+                'pemesanans.id as id_pesanan',
+                'pemesanans.tanggal_masuk',
+                'pemesanans.tanggal_keluar',
+                'users.*',
+                'users.id as id_user',
+                'kos.id as id_kos',
+                'kos.nama_kos',
+                'statuses.status'
+            )
+            ->where('pemesanans.users_id', '=', $request->user()->id)
+            ->where('pemesanans.status_id', '=', $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN)
+            ->get();
+
+        foreach ($pembayaran as $key => $value) {
+            $pembayaran[$key]->tanggal_masuk = $this->timestampToDateFormat($pembayaran[$key]->tanggal_masuk);
+            $pembayaran[$key]->tanggal_keluar = $this->timestampToDateFormat($pembayaran[$key]->tanggal_keluar);
+        }
+        
+
+        return view('dashboard.client.pembayaran-index', compact(
+            'total_pesanan',
+            'total_pembayaran',
+            'pembayaran'
+        ));
     }
 
     // PEMESANAN
     public function pemesananView(Request $request)
     {
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
 
         $pesanan = DB::table('pemesanans')
@@ -79,7 +112,7 @@ class ClientController extends Controller
             $pesanan[$key]->tanggal_keluar = $this->timestampToDateFormat($pesanan[$key]->tanggal_keluar);
         }
 
-        return view('dashboard.client.pemesanan', compact('total_pesanan', 'pesanan'));
+        return view('dashboard.client.pemesanan', compact('total_pesanan', 'total_pembayaran', 'pesanan'));
     }
 
     public function pesanKos(Request $request, $id)
@@ -87,7 +120,9 @@ class ClientController extends Controller
         $pemesanan = Pemesanan::create([
             'users_id' => $request->user()->id,
             'kos_id' => $request->id,
-            'status_id' => $this->STATUS_PEMESANAN_PESAN
+            'status_id' => $this->STATUS_PEMESANAN_PESAN,
+            'tanggal_masuk' => now()->get('timestamp'),
+            'tanggal_keluar' => now()->get('timestamp')
         ]);
 
         Alert::success('info', 'Pesanan berhasil dibuat');
@@ -150,8 +185,6 @@ class ClientController extends Controller
 
     public function bookingPesanan(Request $request, $id)
     {
-        dd($id);
-
         $pesanan = Pemesanan::find($id);
         $pesanan->update([
             'status_id' => $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN
@@ -167,6 +200,16 @@ class ClientController extends Controller
         $total_pesanan = DB::table('pemesanans')
             ->where('users_id', '=', $id_user)
             ->where('status_id', '=', $this->STATUS_PEMESANAN_PESAN)
+            ->count();
+
+        return $total_pesanan;
+    }
+
+    public function getTotalPembayaran($id_user)
+    {
+        $total_pesanan = DB::table('pemesanans')
+            ->where('users_id', '=', $id_user)
+            ->where('status_id', '=', $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN)
             ->count();
 
         return $total_pesanan;

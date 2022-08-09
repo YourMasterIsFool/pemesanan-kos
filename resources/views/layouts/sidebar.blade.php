@@ -125,11 +125,15 @@
                     </div>
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('pemilik/pembayaran') || Request::is('pemilik/pembayaran/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Pembayaran</a>
+                            <a class="nav_title" href="{{ route('pemilik.pembayaran.index') }}"
+                                style="margin-right: 20px;">Pembayaran @if (isset($total_pembayaran) && $total_pembayaran !== 0)
+                                <span class="badge text-bg-secondary">{{ $total_pembayaran }}</span>
+                            @else
+                            @endif</a>
                         </div>
                     </div>
                 </li>

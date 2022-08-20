@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
 class PemesananController extends Controller
 {
-    private $STATUS_PEMESANAN_PESAN = 1;
-    private $STATUS_PEMESANAN_BATAL = 2;
-    private $STATUS_PEMESANAN_BOOKING = 3;
-    private $STATUS_PEMESANAN_SELESAI = 4;
-    private $STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN = 5;
-    private $STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI = 6;
-    private $STATUS_PEMBAYARAN_TERKONFIRMASI = 7;
+    private $STATUS_PEMESANAN_MASUK = 1;
+    private $STATUS_PEMESANAN_BERHASIL = 2;
+    private $STATUS_PEMESANAN_BATAL = 3;
+    private $STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN = 4;
+    private $STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI_PEMBAYARAN = 5;
+    private $STATUS_PEMBAYARAN_TERKONFIRMASI = 6;
+    private $STATUS_PEMBAYARAN_DIBATALKAN = 7;
+    private $STATUS_BOOOKING_BERLANGSUNG = 8;
+    private $STATUS_BOOOKING_BERAKHIR = 9;
 
     public function index(Request $request)
     {
@@ -36,11 +39,11 @@ class PemesananController extends Controller
                 'pemilik_kos.user_id as id_pemilik'
             )
             ->where('pemilik_kos.user_id', '=', $request->user()->id)
-            ->where('pemesanans.status_id', '=', $this->STATUS_PEMESANAN_PESAN)
+            ->orderByDesc('pemesanans.created_at')
             ->get();
 
         foreach ($pesanan as $key => $value) {
-            $pesanan[$key]->durasi = $this->dateDiffInDays($pesanan[0]->tanggal_masuk, $pesanan[0]->tanggal_keluar);
+            $pesanan[$key]->durasi = $this->dateDiffInDays($pesanan[$key]->tanggal_masuk, $pesanan[$key]->tanggal_keluar);
             $pesanan[$key]->tanggal_masuk = $this->timestampToDateFormat($pesanan[$key]->tanggal_masuk);
             $pesanan[$key]->tanggal_keluar = $this->timestampToDateFormat($pesanan[$key]->tanggal_keluar);
         }
@@ -53,12 +56,30 @@ class PemesananController extends Controller
 
     public function detail($id)
     {
-        return view('dashboard.admin.Pemesanan.detail');
+        $detail = DB::table('pemesanans')
+            ->join('users', 'pemesanans.users_id', '=', 'users.id')
+            ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')
+            ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
+            ->select(
+                'pemesanans.id as id_pesanan',
+                'users.nama',
+                'users.nik',
+                'users.foto_ktp',
+                'users.email',
+                'users.jenis_kelamin',
+                'users.alamat as alamat_pemesan',
+                'users.nomor_telepon',
+                'kos.*',
+                'statuses.*'
+            )
+            ->where('users.id', '=', $id)
+            ->get()[0];
+        // dd($detail);
+        return view('dashboard.admin.Pemesanan.detail', compact('detail'));
     }
 
     function dateDiffInDays($date1, $date2)
     {
-        // Calculating the difference in timestamps
         $diff = $date2 - $date1;
 
         return abs(round($diff / 2630000)) . ' Bulan';
@@ -80,7 +101,7 @@ class PemesananController extends Controller
             ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
             ->join('pemilik_kos', 'pemesanans.kos_id', '=', 'pemilik_kos.kos_id')
             ->where('pemilik_kos.user_id', '=', $pemilik_id)
-            ->where('pemesanans.status_id', '=', $this->STATUS_PEMESANAN_PESAN)
+            ->where('pemesanans.status_id', '=', $this->STATUS_PEMESANAN_MASUK)
             ->get();
 
         return count($pesanan);

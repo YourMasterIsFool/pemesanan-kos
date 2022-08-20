@@ -25,6 +25,7 @@
                                 <th scope="col">Tangal Masuk</th>
                                 <th scope="col">Tanggal Keluar</th>
                                 <th scope="col">Status Pesanan</th>
+                                <th scope="col">Detail</th>
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
@@ -37,6 +38,12 @@
                                     <td>{{ $item->tanggal_masuk }}</td>
                                     <td>{{ $item->tanggal_keluar }}</td>
                                     <td>{{ $item->status }}</td>
+                                    <td>
+                                        <a href="{{route('pemilik.pemesanan.detail', $item->id_user)}}">
+                                            <img style="width: 30px; margin-right: 10px;"
+                                                src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

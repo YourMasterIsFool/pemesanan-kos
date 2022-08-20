@@ -20,6 +20,7 @@ class CreatePembayaransTable extends Migration
             $table->foreignId('kos_id')->nullable()->constrained('kos')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('status_id')->nullable()->constrained('statuses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('bukti_pembayaran')->nullable();
+            $table->integer('total')->nullable();
             $table->integer('expired_at')->nullable();
             $table->timestamps();
         });

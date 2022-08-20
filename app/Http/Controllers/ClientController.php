@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
 use App\Models\Pemesanan;
 use Faker\Provider\Lorem;
 use Illuminate\Http\Request;
@@ -11,13 +12,15 @@ use Illuminate\Support\Carbon;
 
 class ClientController extends Controller
 {
-    private $STATUS_PEMESANAN_PESAN = 1;
-    private $STATUS_PEMESANAN_BATAL = 2;
-    private $STATUS_PEMESANAN_BOOKING = 3;
-    private $STATUS_PEMESANAN_SELESAI = 4;
-    private $STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN = 5;
-    private $STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI = 6;
-    private $STATUS_PEMBAYARAN_TERKONFIRMASI = 7;
+    private $STATUS_PEMESANAN_MASUK = 1;
+    private $STATUS_PEMESANAN_BERHASIL = 2;
+    private $STATUS_PEMESANAN_BATAL = 3;
+    private $STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN = 4;
+    private $STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI_PEMBAYARAN = 5;
+    private $STATUS_PEMBAYARAN_TERKONFIRMASI = 6;
+    private $STATUS_PEMBAYARAN_DIBATALKAN = 7;
+    private $STATUS_BOOOKING_BERLANGSUNG = 8;
+    private $STATUS_BOOOKING_BERAKHIR = 9;
 
 
     // PROFIL
@@ -74,7 +77,7 @@ class ClientController extends Controller
             $pembayaran[$key]->tanggal_masuk = $this->timestampToDateFormat($pembayaran[$key]->tanggal_masuk);
             $pembayaran[$key]->tanggal_keluar = $this->timestampToDateFormat($pembayaran[$key]->tanggal_keluar);
         }
-        
+
 
         return view('dashboard.client.pembayaran-index', compact(
             'total_pesanan',
@@ -104,7 +107,7 @@ class ClientController extends Controller
                 'statuses.status'
             )
             ->where('pemesanans.users_id', '=', $request->user()->id)
-            ->where('pemesanans.status_id', '=', $this->STATUS_PEMESANAN_PESAN)
+            ->where('pemesanans.status_id', '=', $this->STATUS_PEMESANAN_MASUK)
             ->get();
 
         foreach ($pesanan as $key => $value) {
@@ -120,7 +123,7 @@ class ClientController extends Controller
         $pemesanan = Pemesanan::create([
             'users_id' => $request->user()->id,
             'kos_id' => $request->id,
-            'status_id' => $this->STATUS_PEMESANAN_PESAN,
+            'status_id' => $this->STATUS_PEMESANAN_MASUK,
             'tanggal_masuk' => now()->get('timestamp'),
             'tanggal_keluar' => now()->get('timestamp')
         ]);
@@ -133,7 +136,9 @@ class ClientController extends Controller
     {
         $pesanan = Pemesanan::find($id);
 
-        $pesanan->delete();
+        $pesanan->update([
+            'status_id' => $this->STATUS_PEMESANAN_BATAL
+        ]);
 
         Alert::success('info', 'Pesanan berhasil dihapus');
         return redirect()->route('client.pemesanan');
@@ -142,6 +147,7 @@ class ClientController extends Controller
     public function editPesananView(Request $request, $id)
     {
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
+        $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
         $detail_pesanan = DB::table('pemesanans')
             ->join('users', 'pemesanans.users_id', '=', 'users.id')
@@ -161,11 +167,11 @@ class ClientController extends Controller
             ->where('pemesanans.id', '=', $id)
             ->get();
 
+
         // dd($detail_pesanan);
 
 
-        return view('dashboard.client.pesanan-edit', compact('total_pesanan', 'detail_pesanan'));
-        dd($id);
+        return view('dashboard.client.pesanan-edit', compact('total_pesanan', 'total_pembayaran', 'detail_pesanan'));
     }
 
     public function editPesananSave(Request $request, $id)
@@ -187,7 +193,15 @@ class ClientController extends Controller
     {
         $pesanan = Pemesanan::find($id);
         $pesanan->update([
-            'status_id' => $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN
+            'status_id' => $this->STATUS_PEMESANAN_BERHASIL
+        ]);
+
+        Pembayaran::create([
+            'pemesanan_id' => $pesanan->id,
+            'users_id' => $pesanan->users_id,
+            'kos_id' => $pesanan->kos_id,
+            'status_id' => $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN,
+            'expired_at' => time() + 24 * 60 * 60
         ]);
 
         Alert::success('info', 'Booking berhasil, lanjutkan proses pembayaran');
@@ -199,7 +213,7 @@ class ClientController extends Controller
     {
         $total_pesanan = DB::table('pemesanans')
             ->where('users_id', '=', $id_user)
-            ->where('status_id', '=', $this->STATUS_PEMESANAN_PESAN)
+            ->where('status_id', '=', $this->STATUS_PEMESANAN_MASUK)
             ->count();
 
         return $total_pesanan;

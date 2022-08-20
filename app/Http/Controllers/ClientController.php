@@ -59,35 +59,44 @@ class ClientController extends Controller
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
         $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        $pembayaran = DB::table('pemesanans')
-            ->join('users', 'pemesanans.users_id', '=', 'users.id')
-            ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')
-            ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
-            ->select(
-                'pemesanans.id as id_pesanan',
-                'pemesanans.tanggal_masuk',
-                'pemesanans.tanggal_keluar',
-                'users.*',
-                'users.id as id_user',
-                'kos.id as id_kos',
-                'kos.nama_kos',
-                'statuses.status'
-            )
-            ->where('pemesanans.users_id', '=', $request->user()->id)
-            ->where('pemesanans.status_id', '=', $this->STATUS_PEMBAYARAN_MENUNGGU_PEMBAYARAN)
+        $tagihans = DB::table('tagihans')
+            ->join('users', 'tagihans.users_id', '=', 'users.id')
+            ->join('statuses', 'tagihans.status_id', '=', 'statuses.id')
+            ->select('tagihans.*', 'statuses.*', 'tagihans.id as id_tagihan')
+            ->where('users.id', '=', $request->user()->id)
             ->get();
 
-        foreach ($pembayaran as $key => $value) {
-            $pembayaran[$key]->tanggal_masuk = $this->timestampToDateFormat($pembayaran[$key]->tanggal_masuk);
-            $pembayaran[$key]->tanggal_keluar = $this->timestampToDateFormat($pembayaran[$key]->tanggal_keluar);
-        }
+        foreach ($tagihans as $tagihan_key => $tagihan) {
+            foreach ($this->getBulan() as $key_bulan => $bulan) {
+                // dd($tagihan->bulan == 4);
 
+                if ($tagihan->bulan == $key_bulan) {
+                    $tagihans[$tagihan_key]->bulan = $bulan;
+                }
+            }
+        }
 
         return view('dashboard.client.pembayaran-index', compact(
             'total_pesanan',
             'total_pembayaran',
-            'pembayaran'
+            'tagihans'
         ));
+    }
+
+    public function uploadBuktiPembayaran(Request $request, $id){
+        $tagihan = Tagihan::find($id);
+
+        $fileName = $request->bukti->getClientOriginalName();
+        $path_bukti_pembayaran = public_path() . "/bukti";
+        $request->bukti->move($path_bukti_pembayaran, $fileName);
+
+        $tagihan->update([
+            'bukti' => $fileName,
+            'status_id' => $this->STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI_PEMBAYARAN
+        ]);
+        
+        Alert::success('info', 'Upload bukti pembayaran berhasil');
+        return redirect()->route('client.pembayaran');
     }
 
     // PEMESANAN
@@ -245,6 +254,8 @@ class ClientController extends Controller
     }
 
 
+
+    // HELPER FUNCTION
     public function getBulan()
     {
         return array(

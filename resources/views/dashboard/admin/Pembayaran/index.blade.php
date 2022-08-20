@@ -36,12 +36,22 @@
                                     <td>Rp. {{ $item->total }}</td>
                                     <td>Rp. {{ $item->sisa_tagihan }}</td>
                                     <td>{{ $item->status }}</td>
-                                    <td>
-                                        <a href="{{ route('pemilik.pembayaran.detail', $item->id_pembayaran) }}">
-                                            <img style="width: 30px; margin-right: 10px;"
-                                                src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
-                                        </a>
-                                    </td>
+                                    @can('pemilik')
+                                        <td>
+                                            <a href="{{ route('pemilik.pembayaran.detail', $item->id_pembayaran) }}">
+                                                <img style="width: 30px; margin-right: 10px;"
+                                                    src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('admin')
+                                        <td>
+                                            <a href="{{ route('admin.pembayaran.detail', $item->id_pembayaran) }}">
+                                                <img style="width: 30px; margin-right: 10px;"
+                                                    src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                            </a>
+                                        </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

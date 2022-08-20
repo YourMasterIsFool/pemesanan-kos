@@ -46,6 +46,7 @@ Route::prefix('client')->middleware(['auth'])->group(function () {
     Route::prefix('pembayaran')->group(function () {
         Route::get('/', [ClientController::class, 'pembayaranView'])->name('client.pembayaran');
         Route::get('/batal/{id}', [ClientController::class, 'batalkanPesanan'])->name('client.pembayaran.batal');
+        Route::post('/upload/{id}', [ClientController::class, 'uploadBuktiPembayaran'])->name('client.pembayaran.upload');
     });
 
     Route::prefix('kos')->group(function () {
@@ -81,9 +82,20 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/{id}/edit', [DaftarPemilikController::class, 'editSave'])->name('dashboard.daftarpemilik.editsave');
         Route::delete('/{id}', [DaftarPemilikController::class, 'delete'])->name('dashboard.daftarpemilik.delete');
     });
+
+    Route::prefix('pemesanan')->group(function () {
+        Route::get('/', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
+        Route::get('/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
+    });
+
+    Route::prefix('pembayaran')->group(function () {
+        Route::get('/', [PembayaranController::class, 'index'])->name('admin.pembayaran.index');
+        Route::get('/{id}', [PembayaranController::class, 'detail'])->name('admin.pembayaran.detail');
+        Route::post('/konfirmasi/{id}', [PembayaranController::class, 'konfirmasi'])->name('admin.pembayaran.konfirmasi');
+    });
 });
 
-Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function () {
+Route::prefix('pemilik')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'indexPemilik'])->name('dashboard.pemilik.index');
     Route::prefix('kos')->group(function () {
         Route::get('/', [KosController::class, 'index'])->name('dashboard.kos.index');
@@ -93,10 +105,6 @@ Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function () {
         Route::get('/{id}/edit', [KosController::class, 'editView'])->name('dashboard.kos.editview');
         Route::post('/{id}/edit', [KosController::class, 'editSave'])->name('dashboard.kos.editsave');
         Route::delete('/{id}', [KosController::class, 'delete'])->name('dashboard.kos.delete');
-    });
-
-    Route::prefix('tagihan')->group(function(){
-
     });
 
     Route::prefix('pemesanan')->group(function () {

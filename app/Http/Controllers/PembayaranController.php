@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
+use App\Models\Tagihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PembayaranController extends Controller
 {
@@ -17,10 +20,36 @@ class PembayaranController extends Controller
     private $STATUS_PEMBAYARAN_DIBATALKAN = 7;
     private $STATUS_BOOOKING_BERLANGSUNG = 8;
     private $STATUS_BOOOKING_BERAKHIR = 9;
+    private $STATUS_DIBAYAR_SEBAGIAN = 10;
+    private $STATUS_LUNAS = 11;
     //
 
     public function index(Request $request)
     {
+        if ($request->user()->roles[0]->role === 'Admin') {
+            $pembayarans = DB::table('pembayarans')
+                ->join('users', 'pembayarans.users_id', '=', 'users.id')
+                ->join('kos', 'pembayarans.kos_id', '=', 'kos.id')
+                ->join('statuses', 'pembayarans.status_id', '=', 'statuses.id')
+                ->join('pemilik_kos', 'pembayarans.kos_id', '=', 'pemilik_kos.kos_id')
+                ->join('pemesanans', 'pembayarans.pemesanan_id', '=', 'pemesanans.id')
+                ->select(
+                    'pembayarans.id as id_pembayaran',
+                    'pembayarans.pemesanan_id as id_pemesanan',
+                    'pembayarans.sisa_tagihan',
+                    'users.*',
+                    'users.id as id_user',
+                    'kos.id as id_kos',
+                    'kos.nama_kos',
+                    'statuses.status',
+                    'pemilik_kos.*',
+                    'pemilik_kos.user_id as id_pemilik',
+                    'pembayarans.total'
+                )
+                ->get();
+
+            return view('dashboard.admin.Pembayaran.index', compact('pembayarans'));
+        }
         $pembayarans = DB::table('pembayarans')
             ->join('users', 'pembayarans.users_id', '=', 'users.id')
             ->join('kos', 'pembayarans.kos_id', '=', 'kos.id')
@@ -81,7 +110,7 @@ class PembayaranController extends Controller
         $tagihans = DB::table('tagihans')
             ->join('users', 'tagihans.users_id', '=', 'users.id')
             ->join('statuses', 'tagihans.status_id', '=', 'statuses.id')
-            ->select('tagihans.*', 'statuses.*')
+            ->select('tagihans.*', 'statuses.*', 'tagihans.id as id_tagihan')
             ->where('users.id', '=', $detail->id_user)
             ->get();
 
@@ -98,6 +127,26 @@ class PembayaranController extends Controller
         // dd($tagihans);
 
         return view('dashboard.admin.Pembayaran.detail', compact('detail', 'tagihans'));
+    }
+
+    public function konfirmasi(Request $request, $id){
+        // dd($request->all());
+        $tagihan = Tagihan::find($id);
+        $pembayaran = Pembayaran::find($tagihan->pembayaran_id);
+
+        $tagihan->update([
+            'status_id' => $this->STATUS_PEMBAYARAN_TERKONFIRMASI
+        ]);
+
+        $sisa_tagihan = (int)$pembayaran->sisa_tagihan -= (int)$request->total;
+
+        $pembayaran->update([
+            'status_id' => $this->STATUS_DIBAYAR_SEBAGIAN,
+            'sisa_tagihan' => $sisa_tagihan
+        ]);
+
+        Alert::success('info', 'Pembayran berhasil dikonfirmasi');
+        return redirect()->route('admin.pembayaran.index');
     }
 
     public function countPesanan($pemilik_id)

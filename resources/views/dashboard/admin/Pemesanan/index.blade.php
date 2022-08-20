@@ -38,12 +38,22 @@
                                     <td>{{ $item->tanggal_masuk }}</td>
                                     <td>{{ $item->tanggal_keluar }}</td>
                                     <td>{{ $item->status }}</td>
+                                    @can('pemilik')
                                     <td>
                                         <a href="{{route('pemilik.pemesanan.detail', $item->id_user)}}">
                                             <img style="width: 30px; margin-right: 10px;"
                                                 src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
                                         </a>
                                     </td>
+                                    @endcan
+                                    @can('admin')
+                                    <td>
+                                        <a href="{{route('admin.pemesanan.detail', $item->id_user)}}">
+                                            <img style="width: 30px; margin-right: 10px;"
+                                                src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                        </a>
+                                    </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

@@ -70,6 +70,9 @@
                                                 <th scope="col" style="color: #3b3b3b">Jumlah</th>
                                                 <th scope="col" style="color: #3b3b3b">Status</th>
                                                 <th scope="col" style="color: #3b3b3b">Bukti Pembayaran</th>
+                                                @can('admin')
+                                                    <th scope="col" style="color: #3b3b3b">Konfirmasi</th>
+                                                @endcan
                                             </tr>
                                         </thead>
                                         @php
@@ -78,11 +81,34 @@
                                         <tbody>
                                             @foreach ($tagihans as $item)
                                                 <tr>
-                                                    <td>{{++$i}}</td>
-                                                    <td>{{$item->bulan}}</td>
-                                                    <td>Rp. {{$item->total}}</td>
-                                                    <td>{{$item->status}}</td>
-                                                    <td><a href="">Link</a></td>
+                                                    <td>{{ ++$i }}</td>
+                                                    <td>{{ $item->bulan }}</td>
+                                                    <td>Rp. {{ $item->total }}</td>
+                                                    <td>{{ $item->status }}</td>
+                                                    @if ($item->status === 'Menunggu Pembayaran')
+                                                        <td>Belum dibayar</td>
+                                                    @else
+                                                        <td> <a target="_blank"
+                                                                href="{{ asset('bukti/' . $item->bukti) }}">Link</a></td>
+                                                    @endif
+                                                    @can('admin')
+                                                        @if ($item->status === 'Menunggu Pembayaran')
+                                                            <td></td>
+                                                        @elseif($item->status === 'Pembayaran Terkonfirmasi')
+                                                            <td>LUNAS</td>
+                                                        @else
+                                                            <td>
+                                                                <form
+                                                                    action="{{ route('admin.pembayaran.konfirmasi', $item->id_tagihan) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('POST')
+                                                                    <input type="text" hidden value="{{ $item->total }}" name="total">
+                                                                    <button type="submit" class="btn1">Konfirmasi</button>
+                                                                </form>
+                                                            </td>
+                                                        @endif
+                                                    @endcan
                                                 </tr>
                                             @endforeach
                                         </tbody>

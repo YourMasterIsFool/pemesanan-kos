@@ -21,6 +21,39 @@ class PemesananController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->user()->roles[0]->role === 'Admin') {
+            $pesanan = DB::table('pemesanans')
+                ->join('users', 'pemesanans.users_id', '=', 'users.id')
+                ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')
+                ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
+                ->join('pemilik_kos', 'pemesanans.kos_id', '=', 'pemilik_kos.kos_id')
+                ->select(
+                    'pemesanans.id as id_pesanan',
+                    'pemesanans.tanggal_masuk',
+                    'pemesanans.tanggal_keluar',
+                    'users.*',
+                    'users.id as id_user',
+                    'kos.id as id_kos',
+                    'kos.nama_kos',
+                    'statuses.status',
+                    'pemilik_kos.*',
+                    'pemilik_kos.user_id as id_pemilik'
+                )
+                ->orderByDesc('pemesanans.created_at')
+                ->get();
+
+            foreach ($pesanan as $key => $value) {
+                $pesanan[$key]->durasi = $this->dateDiffInDays($pesanan[$key]->tanggal_masuk, $pesanan[$key]->tanggal_keluar);
+                $pesanan[$key]->tanggal_masuk = $this->timestampToDateFormat($pesanan[$key]->tanggal_masuk);
+                $pesanan[$key]->tanggal_keluar = $this->timestampToDateFormat($pesanan[$key]->tanggal_keluar);
+            }
+
+            $total_pesanan = $this->countPesanan($request->user()->id);
+
+
+            return view('dashboard.admin.Pemesanan.index', compact('pesanan', 'total_pesanan'));
+        }
+
         $pesanan = DB::table('pemesanans')
             ->join('users', 'pemesanans.users_id', '=', 'users.id')
             ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')

@@ -49,20 +49,20 @@
 
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('admin/pembayaran') || Request::is('admin/pembayaran/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Pembayaran</a>
+                            <a class="nav_title" href="{{route('admin.pembayaran.index')}}" style="margin-right: 20px;">Pembayaran</a>
                         </div>
                     </div>
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('admin/pemesanan') || Request::is('admin/pemesanan/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Pemesanan</a>
+                            <a class="nav_title" href="{{route('admin.pemesanan.index')}}" style="margin-right: 20px;">Pemesanan</a>
                         </div>
                     </div>
                 </li>

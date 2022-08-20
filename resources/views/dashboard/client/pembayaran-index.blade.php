@@ -62,7 +62,7 @@
         <div class="container client-checkout">
             <div class="row justify-content-center">
                 <div style="margin-top: 20px;" class="col content">
-                    @if (count($pembayaran) < 1)
+                    @if (count($tagihans) < 1)
                         <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                     @else
                         <h2 style="margin-bottom: 20px;">Pembayaran Anda</h2>
@@ -72,67 +72,65 @@
                             @endphp
                             <thead class="bg-4" style="color: white;">
                                 <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Nama Kos</th>
-                                    <th scope="col">Tanggal Masuk</th>
-                                    <th scope="col">Tanggal Keluar</th>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Bulan</th>
+                                    <th scope="col">Jumlah</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Selesaikan Pembayaran</th>
-                                    <th scope="col">Batal</th>
+                                    <th scope="col">Upload Bukti Pembayaran</th>
                                 </tr>
                             </thead>
                             <tbody style="background-color: white;">
-                                @foreach ($pembayaran as $order)
+                                @foreach ($tagihans as $item)
                                     <tr>
-                                        <td scope="row">{{ ++$i }}</td>
-                                        <td>{{ $order->nama_kos }}</td>
-                                        <td>{{ $order->tanggal_masuk ?? 'kosong' }}</td>
-                                        <td>{{ $order->tanggal_keluar ?? 'kosong' }}</td>
-                                        <td>{{ $order->status }}</td>
-
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $item->bulan }}</td>
+                                        <td>Rp. {{ $item->total }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>
-                                            <a href="{{ route('client.pemesanan.edit.view', $order->id_pesanan) }}">
-                                                <img style="width: 30px; margin-right: 10px;"
-                                                    src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
-                                            </a>
-                                        </td>
-
-                                        <td>
-                                            <a data-bs-toggle="modal" href=""
-                                                data-bs-target="#pesananModal-{{ $order->id_pesanan }}"
-                                                onclick="event.preventDefault();">
-                                                <img style="width: 30px; margin-right: 10px;"
-                                                    src="{{ asset('icons/ic_delete.svg') }}" alt="sf">
-                                            </a>
-
-                                            <form id="hapus-pesanan-{{ $order->id_pesanan }}"
-                                                action="{{ route('client.pemesanan.batal', $order->id_pesanan) }}"
-                                                method="POST" class="d-none">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
+                                            @if ($item->status === 'Menunggu Pembayaran')
+                                                <a data-bs-toggle="modal" class="btn2"
+                                                    data-bs-target="#buktiModal-{{ $item->id_tagihan }}" href=""
+                                                    onclick="event.preventDefault();">
+                                                    Upload
+                                                </a>
+                                            @else
+                                                <a target="_blank" href="{{asset('bukti/' . $item->bukti)}}">Link</a>
+                                            @endif
                                         </td>
                                     </tr>
 
-
-                                    <div class="modal fade" id="pesananModal-{{ $order->id_pesanan }}"
-                                        tabindex="-1" aria-labelledby="pesanan-modal-label" aria-hidden="true">
+                                    <div class="modal fade" id="buktiModal-{{ $item->id_tagihan }}" tabindex="-1"
+                                        aria-labelledby="kosModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="pesanan-modal-label">Hapus Pesanan
-                                                    </h5>
+                                                    <h5 class="modal-title" id="kosModalLabel">Upload</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus sekarang?
+
+
+                                                    <form id="uplad-bukti-{{ $item->id_tagihan }}"
+                                                        enctype="multipart/form-data"
+                                                        action="{{ route('client.pembayaran.upload', $item->id_tagihan) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('POST')
+
+                                                        <label for="bukti" style="margin-bottom: 15px;">Upload Bukti
+                                                            Pembayaran bulan {{ $item->bulan }}</label>
+                                                        <input id="bukti" type='file'
+                                                            class="form-control @error('bukti') is-invalid @enderror"
+                                                            name="bukti" value="{{ old('bukti') }}"
+                                                            autocomplete="username">
+                                                    </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn2"
                                                         data-bs-dismiss="modal">Batal</button>
                                                     <button type="button" class="btn1"
-                                                        onclick="document.getElementById('hapus-pesanan-{{ $order->id_pesanan }}').submit();">Batalkan</button>
+                                                        onclick="document.getElementById('uplad-bukti-{{ $item->id_tagihan }}').submit();">Upload</button>
                                                 </div>
                                             </div>
                                         </div>

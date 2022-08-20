@@ -95,6 +95,10 @@ Route::prefix('pemilik')->middleware(['auth', 'pemilik'])->group(function () {
         Route::delete('/{id}', [KosController::class, 'delete'])->name('dashboard.kos.delete');
     });
 
+    Route::prefix('tagihan')->group(function(){
+
+    });
+
     Route::prefix('pemesanan')->group(function () {
         Route::get('/', [PemesananController::class, 'index'])->name('pemilik.pemesanan.index');
         Route::get('/{id}', [PemesananController::class, 'detail'])->name('pemilik.pemesanan.detail');

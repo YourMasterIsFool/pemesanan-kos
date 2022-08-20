@@ -21,7 +21,10 @@
                                 <th scope="col">No.</th>
                                 <th scope="col">Nama Pemesan</th>
                                 <th scope="col">Nama Kos</th>
+                                <th scope="col">Total Pembayaran</th>
+                                <th scope="col">Sisa Tagihan</th>
                                 <th scope="col">Status Pembayaran</th>
+                                <th scope="col">Detail</th>
                             </tr>
                         </thead>
                         <tbody style="background-color: white;">
@@ -30,7 +33,15 @@
                                     <td scope="row">{{ ++$i }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->nama_kos }}</td>
+                                    <td>Rp. {{ $item->total }}</td>
+                                    <td>Rp. {{ $item->sisa_tagihan }}</td>
                                     <td>{{ $item->status }}</td>
+                                    <td>
+                                        <a href="{{ route('pemilik.pembayaran.detail', $item->id_pembayaran) }}">
+                                            <img style="width: 30px; margin-right: 10px;"
+                                                src="{{ asset('icons/ic_edit.svg') }}" alt="sf">
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

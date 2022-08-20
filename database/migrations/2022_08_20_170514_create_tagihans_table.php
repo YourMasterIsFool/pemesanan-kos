@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePembayaransTable extends Migration
+class CreateTagihansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreatePembayaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
+        Schema::create('tagihans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pemesanan_id')->nullable()->constrained('pemesanans')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('pembayaran_id')->nullable()->constrained('pembayarans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('users_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('kos_id')->nullable()->constrained('kos')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('status_id')->nullable()->constrained('statuses')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('bukti_pembayaran')->nullable();
             $table->integer('total')->nullable();
-            $table->integer('sisa_tagihan')->nullable();
-            $table->integer('expired_at')->nullable();
+            $table->string('bukti')->nullable();
+            $table->string('bulan')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ class CreatePembayaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::dropIfExists('tagihans');
     }
 }

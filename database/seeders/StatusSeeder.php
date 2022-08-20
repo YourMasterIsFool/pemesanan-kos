@@ -23,7 +23,8 @@ class StatusSeeder extends Seeder
     private $STATUS_PEMBAYARAN_DIBATALKAN = 7;
     private $STATUS_BOOOKING_BERLANGSUNG = 8;
     private $STATUS_BOOOKING_BERAKHIR = 9;
-
+    private $STATUS_DIBAYAR_SEBAGIAN = 10;
+    private $STATUS_LUNAS = 11;
 
     
     public function run()
@@ -75,6 +76,17 @@ class StatusSeeder extends Seeder
         Status::create([
             'tipe' => 'Booking',
             'status' => 'Booking Berakhir'
+        ]);
+
+
+        Status::create([
+            'tipe' => 'Pembayaran',
+            'status' => 'Dibayar Sebagian'
+        ]);
+
+        Status::create([
+            'tipe' => 'Pembayaran',
+            'status' => 'Lunas'
         ]);
     }
 }

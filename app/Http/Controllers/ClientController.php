@@ -50,7 +50,92 @@ class ClientController extends Controller
         $total_pesanan = $this->getTotalPesanan($request->user()->id);
         $total_pembayaran = $this->getTotalPembayaran($request->user()->id);
 
-        return view('dashboard.client.daftar-booking', compact('total_pesanan', 'total_pembayaran'));
+        $pembayaran = Pembayaran::where('users_id', $request->user()->id)->get();
+
+        $bookings = DB::table('bookings')
+            ->join('users', 'bookings.users_id', '=', 'users.id')
+            ->join('statuses', 'bookings.status_id', '=', 'statuses.id')
+            ->select('bookings.*', 'statuses.*')
+            ->where('users.id', '=', $request->user()->id)
+            ->where('statuses.id', '=', $this->STATUS_BOOOKING_BERLANGSUNG)
+            ->get();
+            
+        if (count($bookings) < 1) {
+            return view('dashboard.client.daftar-booking', compact(
+                'total_pesanan',
+                'total_pembayaran',
+                'bookings',
+            ));
+        } else {
+            $detail_pesanan = DB::table('pemesanans')
+                ->join('users', 'pemesanans.users_id', '=', 'users.id')
+                ->join('kos', 'pemesanans.kos_id', '=', 'kos.id')
+                ->join('statuses', 'pemesanans.status_id', '=', 'statuses.id')
+                ->select(
+                    'pemesanans.id as id_pesanan',
+                    'pemesanans.tanggal_masuk',
+                    'pemesanans.tanggal_keluar',
+                    'users.*',
+                    'users.id as id_user',
+                    'kos.*',
+                    'kos.id as id_kos',
+                    'kos.nama_kos',
+                    'statuses.status'
+                )
+                ->where('pemesanans.id', '=', $bookings[0]->pemesanan_id)
+                ->get();
+
+            $detail = DB::table('pembayarans')
+                ->join('users', 'pembayarans.users_id', '=', 'users.id')
+                ->join('kos', 'pembayarans.kos_id', '=', 'kos.id')
+                ->join('statuses', 'pembayarans.status_id', '=', 'statuses.id')
+                ->join('pemesanans', 'pembayarans.pemesanan_id', '=', 'pemesanans.id')
+                ->select(
+                    'pembayarans.id as id_pembayaran',
+                    'pembayarans.pemesanan_id as id_pemesanan',
+                    'pembayarans.total',
+                    'pembayarans.sisa_tagihan',
+                    'users.*',
+                    'users.id as id_user',
+                    'users.alamat as alamat_pemesan',
+                    'kos.*',
+                    'statuses.*',
+                    'pemesanans.tanggal_masuk',
+                    'pemesanans.tanggal_keluar',
+                )
+                ->where('pembayarans.id', '=', $pembayaran[0]->id)
+                ->get()[0];
+
+            $detail->durasi_booking = $this->dateDiffInDays($detail->tanggal_masuk, $detail->tanggal_keluar);
+            $detail->tanggal_masuk = $this->timestampToDateFormat($detail->tanggal_masuk);
+            $detail->tanggal_keluar = $this->timestampToDateFormat($detail->tanggal_keluar);
+
+            $tagihans = DB::table('tagihans')
+                ->join('users', 'tagihans.users_id', '=', 'users.id')
+                ->join('statuses', 'tagihans.status_id', '=', 'statuses.id')
+                ->select('tagihans.*', 'statuses.*', 'tagihans.id as id_tagihan')
+                ->where('users.id', '=', $request->user()->id)
+                ->get();
+
+            foreach ($tagihans as $tagihan_key => $tagihan) {
+                foreach ($this->getBulan() as $key_bulan => $bulan) {
+                    // dd($tagihan->bulan == 4);
+
+                    if ($tagihan->bulan == $key_bulan) {
+                        $tagihans[$tagihan_key]->bulan = $bulan;
+                    }
+                }
+            }
+
+            return view('dashboard.client.daftar-booking', compact(
+                'total_pesanan',
+                'total_pembayaran',
+                'bookings',
+                'detail_pesanan',
+                'tagihans',
+                'detail'
+            ));
+        }
     }
 
     // PEMBAYARAN
@@ -83,7 +168,8 @@ class ClientController extends Controller
         ));
     }
 
-    public function uploadBuktiPembayaran(Request $request, $id){
+    public function uploadBuktiPembayaran(Request $request, $id)
+    {
         $tagihan = Tagihan::find($id);
 
         $fileName = $request->bukti->getClientOriginalName();
@@ -94,7 +180,7 @@ class ClientController extends Controller
             'bukti' => $fileName,
             'status_id' => $this->STATUS_PEMBAYARAN_MENUNGGU_KONFIRMASI_PEMBAYARAN
         ]);
-        
+
         Alert::success('info', 'Upload bukti pembayaran berhasil');
         return redirect()->route('client.pembayaran');
     }

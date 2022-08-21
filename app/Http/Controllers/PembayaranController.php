@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Kos;
 use App\Models\Pembayaran;
 use App\Models\Tagihan;
 use Illuminate\Http\Request;
@@ -129,18 +131,32 @@ class PembayaranController extends Controller
         return view('dashboard.admin.Pembayaran.detail', compact('detail', 'tagihans'));
     }
 
-    public function konfirmasi(Request $request, $id){
+    public function konfirmasi(Request $request, $id)
+    {
         // dd($request->all());
         $tagihan = Tagihan::find($id);
-        $pembayaran = Pembayaran::find($tagihan->pembayaran_id);
+        $detail_pembayaran = Pembayaran::find($tagihan->pembayaran_id);
+        $kos = Kos::find($detail_pembayaran->kos_id);
 
         $tagihan->update([
             'status_id' => $this->STATUS_PEMBAYARAN_TERKONFIRMASI
         ]);
 
-        $sisa_tagihan = (int)$pembayaran->sisa_tagihan -= (int)$request->total;
+        if ($detail_pembayaran->total === $detail_pembayaran->sisa_tagihan) {
+            $nomor_kamar = (int)$kos->jumlah_kamar - (int)$kos->kamar_kosong;
 
-        $pembayaran->update([
+            Booking::create([
+                'pemesanan_id' => $detail_pembayaran->pemesanan_id,
+                'users_id' => $detail_pembayaran->users_id,
+                'status_id' => $this->STATUS_BOOOKING_BERLANGSUNG,
+                'kode_booking' => 'NPK' . (string)$nomor_kamar,
+                'nomor_kamar' => $nomor_kamar
+            ]);
+        }
+
+        $sisa_tagihan = (int)$detail_pembayaran->sisa_tagihan -= (int)$request->total;
+
+        $detail_pembayaran->update([
             'status_id' => $this->STATUS_DIBAYAR_SEBAGIAN,
             'sisa_tagihan' => $sisa_tagihan
         ]);

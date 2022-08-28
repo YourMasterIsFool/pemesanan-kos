@@ -49,38 +49,44 @@
 
                 </li>
 
-                <li class="item {{ Request::is('admin/pembayaran') || Request::is('admin/pembayaran/*') ? 'on' : '' }}">
-                    <div class="nav_title_container">
-                        <div class="nav_title_icon">
-                            <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
-                            <a class="nav_title" href="{{route('admin.pembayaran.index')}}" style="margin-right: 20px;">Pembayaran</a>
-                        </div>
-                    </div>
-                </li>
-
                 <li class="item {{ Request::is('admin/pemesanan') || Request::is('admin/pemesanan/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
-                            <a class="nav_title" href="{{route('admin.pemesanan.index')}}" style="margin-right: 20px;">Pemesanan</a>
+                            <a class="nav_title" href="{{ route('admin.pemesanan.index') }}"
+                                style="margin-right: 20px;">Pemesanan</a>
                         </div>
                     </div>
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('admin/pembayaran') || Request::is('admin/pembayaran/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
-                            <img src="{{ asset('icons/ic_booking.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Daftar Booking</a>
+                            <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
+                            <a class="nav_title" href="{{ route('admin.pembayaran.index') }}"
+                                style="margin-right: 20px;">Pembayaran</a>
                         </div>
                     </div>
                 </li>
 
-                <li class="item">
+
+                <li class="item {{ Request::is('admin/booking') || Request::is('admin/booking/*') ? 'on' : '' }}">
+                    <div class="nav_title_container">
+                        <div class="nav_title_icon">
+                            <img src="{{ asset('icons/ic_address.svg') }}" alt="sf">
+                            <a class="nav_title" href="{{ route('admin.booking.index') }}"
+                                style="margin-right: 20px;">Daftar Booking</a>
+                        </div>
+                    </div>
+                </li>
+
+
+                <li class="item {{ Request::is('admin/catatan') || Request::is('admin/catatan/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_book_solid.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Catatan</a>
+                            <a class="nav_title" href="{{ route('admin.catatan.index') }}"
+                                style="margin-right: 20px;">Catatan</a>
                         </div>
                     </div>
                 </li>
@@ -125,24 +131,27 @@
                     </div>
                 </li>
 
-                <li class="item {{ Request::is('pemilik/pembayaran') || Request::is('pemilik/pembayaran/*') ? 'on' : '' }}">
+                <li
+                    class="item {{ Request::is('pemilik/pembayaran') || Request::is('pemilik/pembayaran/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_pay.svg') }}" alt="sf">
                             <a class="nav_title" href="{{ route('pemilik.pembayaran.index') }}"
                                 style="margin-right: 20px;">Pembayaran @if (isset($total_pembayaran) && $total_pembayaran !== 0)
-                                <span class="badge text-bg-secondary">{{ $total_pembayaran }}</span>
-                            @else
-                            @endif</a>
+                                    <span class="badge text-bg-secondary">{{ $total_pembayaran }}</span>
+                                @else
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </li>
 
-                <li class="item">
+                <li class="item {{ Request::is('pemilik/booking') || Request::is('pemilik/booking/*') ? 'on' : '' }}">
                     <div class="nav_title_container">
                         <div class="nav_title_icon">
                             <img src="{{ asset('icons/ic_address.svg') }}" alt="sf">
-                            <a class="nav_title" href="" style="margin-right: 20px;">Daftar Booking</a>
+                            <a class="nav_title" href="{{ route('pemilik.booking.index') }}"
+                                style="margin-right: 20px;">Daftar Booking</a>
                         </div>
                     </div>
                 </li>

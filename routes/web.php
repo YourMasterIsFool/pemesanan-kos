@@ -3,6 +3,8 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CatatanController;
 use App\Http\Controllers\DaftarPemilikController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KosController;
@@ -93,6 +95,20 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('/{id}', [PembayaranController::class, 'detail'])->name('admin.pembayaran.detail');
         Route::post('/konfirmasi/{id}', [PembayaranController::class, 'konfirmasi'])->name('admin.pembayaran.konfirmasi');
     });
+
+    Route::prefix('catatan')->group(function () {
+        Route::get('/', [CatatanController::class, 'index'])->name('admin.catatan.index');
+        Route::get('/create', [CatatanController::class, 'createView'])->name('admin.catatan.create');
+        Route::post('/create', [CatatanController::class, 'save'])->name('admin.catatan.save');
+        Route::get('/{id}/edit', [CatatanController::class, 'editView'])->name('admin.catatan.edit.view');
+        Route::post('/{id}/edit', [CatatanController::class, 'editSave'])->name('admin.catatan.edit.save');
+        Route::delete('/{id}', [CatatanController::class, 'delete'])->name('admin.catatan.delete');
+    });
+    
+    Route::prefix('booking')->group(function () {
+        Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+        Route::get('/{id}', [BookingController::class, 'detail'])->name('admin.booking.detail');
+    });
 });
 
 Route::prefix('pemilik')->middleware(['auth'])->group(function () {
@@ -115,6 +131,11 @@ Route::prefix('pemilik')->middleware(['auth'])->group(function () {
     Route::prefix('pembayaran')->group(function () {
         Route::get('/', [PembayaranController::class, 'index'])->name('pemilik.pembayaran.index');
         Route::get('/{id}', [PembayaranController::class, 'detail'])->name('pemilik.pembayaran.detail');
+    });
+
+    Route::prefix('booking')->group(function () {
+        Route::get('/', [BookingController::class, 'index'])->name('pemilik.booking.index');
+        Route::get('/{id}', [BookingController::class, 'detail'])->name('pemilik.booking.detail');
     });
 });
 

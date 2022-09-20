@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/client.css') }}" rel="stylesheet">
 
     <style>
         body {
@@ -82,8 +83,6 @@
                 <div class="detail-foto">
                     <h2 class="title">Gambar Kos</h2>
                     <div class="gambar">
-                        <img src="{{ asset('kos/' . $data[0]->foto) }}" alt="gambar-kamar">
-                        <img src="{{ asset('kos/' . $data[0]->foto) }}" alt="gambar-kamar">
                         <img src="{{ asset('kos/' . $data[0]->foto) }}" alt="gambar-kamar">
                     </div>
                 </div>

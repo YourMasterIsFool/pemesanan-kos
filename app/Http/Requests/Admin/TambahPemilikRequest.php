@@ -28,7 +28,7 @@ class TambahPemilikRequest extends FormRequest
             'alamat' => 'required',
             'no_telepon' => 'required',
             'password' => 'required',
-            'email' => 'required|email:rfc,dns|unique:users,email',
+            'email' => 'required|email|unique:users,email',
         ];
     }
 

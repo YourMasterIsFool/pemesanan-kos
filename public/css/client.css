@@ -5,7 +5,7 @@
     --color3: #1a4d2e;
     --color4: #3b3b3b;
 }
-body.client{
+body.client {
     background-color: #fafafa;
 }
 .landing {
@@ -19,6 +19,32 @@ body.client{
     background-color: var(--color1);
     height: 100vh;
     position: relative;
+}
+
+.top__left,
+.bottom__right,
+.bottom__left,
+.top__right {
+    position: absolute;
+}
+.top__left {
+    top: 0;
+    left: 0;
+    height: 40%;
+}
+.bottom__right {
+    bottom: 0;
+    right: 0;
+}
+.bottom__left {
+    left: 0;
+    bottom: 0;
+    width: 260px;
+}
+.top__right {
+    top: 0;
+    right: 0;
+    width: 200px;
 }
 
 .landing .client-welcome div {
@@ -40,6 +66,7 @@ body.client{
     width: 100%;
     z-index: 2;
     background-color: var(--color1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
         rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
@@ -74,6 +101,8 @@ body.client{
 .client-navbar {
     display: flex;
     align-items: center;
+    backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
 }
 .client-navbar ul {
     margin-top: 10px;
@@ -94,9 +123,16 @@ body.client{
     position: relative;
     margin-top: 100px;
 }
-.client-checkout .content{
+.client-checkout .content {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+    position: relative;
 }
+
+.detail-maps-search .right {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+

@@ -16,6 +16,8 @@ class CreateKosTable extends Migration
         Schema::create('kos', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kos')->nullable()->unique();
+            $table->string('rekening')->nullable();
+            $table->string('bank')->nullable();
             $table->string('alamat')->nullable();
             $table->string('nomor_telepon')->nullable();
             $table->string('fasilitas')->nullable();

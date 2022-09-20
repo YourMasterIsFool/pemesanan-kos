@@ -49,9 +49,9 @@
                             Logout
                         </a>
 
-                        <a class="dropdown-item" href="{{route('client.profile')}}">
+                        {{-- <a class="dropdown-item" href="{{route('client.profile')}}">
                             Profil
-                        </a>
+                        </a> --}}
 
                         <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="d-none">
                             @csrf
@@ -60,11 +60,13 @@
                 </div>
             </div>
         </div>
-        <div class="container client-checkout">
+        <div class="container-fluid client-checkout">
+            <img class="top__left" src="{{ asset('images/top_left.png') }}" alt="">
+            <img class="bottom__right" src="{{ asset('images/bottom_right.png') }}" alt="">
             <div class="row justify-content-center">
                 <div style="margin-top: 20px;" class="col content">
                     @if (count($pesanan) < 1)
-                        <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
+                        <h1 style="text-align: center; font-size: 24px;">Belum ada pesanan</h1>
                     @else
                         <h2 style="margin-bottom: 20px;">Pesanan kos anda</h2>
                         <table class="table" style="width: 1100px;">

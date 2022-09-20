@@ -48,9 +48,9 @@
                             Logout
                         </a>
 
-                        <a class="dropdown-item" href="{{route('client.profile')}}">
+                        {{-- <a class="dropdown-item" href="{{ route('client.profile') }}">
                             Profil
-                        </a>
+                        </a> --}}
 
                         <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="d-none">
                             @csrf
@@ -59,8 +59,14 @@
                 </div>
             </div>
         </div>
-        <div class="container client-checkout">
+        <div>
+
+        </div>
+        <div class="container-fluid client-checkout">
+            <img class="top__left" src="{{ asset('images/top_left.png') }}" alt="">
+            <img class="bottom__right" src="{{ asset('images/bottom_right.png') }}" alt="">
             <div class="row justify-content-center">
+
                 <div style="margin-top: 20px;" class="col content">
                     @if (count($tagihans) < 1)
                         <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
@@ -94,7 +100,7 @@
                                                     Upload
                                                 </a>
                                             @else
-                                                <a target="_blank" href="{{asset('bukti/' . $item->bukti)}}">Link</a>
+                                                <a target="_blank" href="{{ asset('bukti/' . $item->bukti) }}">Link</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -114,12 +120,17 @@
                                                     <form id="uplad-bukti-{{ $item->id_tagihan }}"
                                                         enctype="multipart/form-data"
                                                         action="{{ route('client.pembayaran.upload', $item->id_tagihan) }}"
-                                                        method="POST">
+                                                        method="POST" style="text-align: start;">
                                                         @csrf
                                                         @method('POST')
 
-                                                        <label for="bukti" style="margin-bottom: 15px;">Upload Bukti
+                                                        <label for="bukti"
+                                                            style="margin-bottom: 15px; text-align: center">Upload Bukti
                                                             Pembayaran bulan {{ $item->bulan }}</label>
+                                                        <div style="text-align: start; font-size: 12px; font-weight: bold;">
+                                                            <p style="margin-bottom: 5px;">* Transfer ke rekening berikut</p>
+                                                            <p>BTN. 002240160011720. Afifah Dewi Yantika</p>
+                                                        </div>
                                                         <input id="bukti" type='file'
                                                             class="form-control @error('bukti') is-invalid @enderror"
                                                             name="bukti" value="{{ old('bukti') }}"
@@ -146,7 +157,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

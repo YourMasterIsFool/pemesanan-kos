@@ -50,9 +50,9 @@
                             Logout
                         </a>
 
-                        <a class="dropdown-item" href="{{route('client.profile')}}">
+                        {{-- <a class="dropdown-item" href="{{ route('client.profile') }}">
                             Profil
-                        </a>
+                        </a> --}}
 
                         <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="d-none">
                             @csrf
@@ -62,11 +62,17 @@
             </div>
         </div>
         <div class="client-welcome">
-           <div>
-            <h2 style="margin-bottom: 20px; font-weight: 700;">Selamat Datang di Website Pemesanan Kos</h2>
-            <h4 style="font-weight: 200; margin-bottom: 12px; ">Mulai cari kos anda sekarang</h4>
-            <a href="{{ route('kos.search') }}" class="btn1">Cari</a>
-           </div>
+
+            <img class="top__left" src="{{ asset('images/top_left.png') }}" alt="">
+            <img class="bottom__right" src="{{ asset('images/bottom_right.png') }}" alt="">
+            <img class="bottom__left" src="{{ asset('images/bottom_left.png') }}" alt="">
+            <img class="top__right" src="{{ asset('images/top_right.png') }}" alt="">
+
+            <div class="welcome-home-desc">
+                <h2 style="margin-bottom: 20px; font-weight: 700;">Selamat Datang di Website Pemesanan Kos</h2>
+                <h4 style="font-weight: 200; margin-bottom: 12px; ">Mulai cari kos anda sekarang</h4>
+                <a href="{{ route('kos.search') }}" class="btn1">Cari</a>
+            </div>
         </div>
     </div>
 

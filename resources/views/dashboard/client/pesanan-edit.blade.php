@@ -60,6 +60,7 @@
             </div>
         </div>
         <div class="container client-checkout">
+            <img class="top__right" src="{{ asset('images/top_right.png') }}" alt="">
             <div class="row justify-content-center">
                 <div style="margin-top: 20px;" class="col content">
                     <div style="width: 900px;">

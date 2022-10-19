@@ -106,7 +106,7 @@
         const kos = @json($kos);
     </script>
     <script src="{{ asset('maps/detailKosMaps.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap" async
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAsclj-WqBBlkJwS2zNu95m4dfA80MG4k&callback=initMap" async
         defer></script>
 
 </body>

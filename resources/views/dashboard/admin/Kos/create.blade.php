@@ -45,9 +45,9 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="foto" class="font-1">Foto Kos</label>
-                                <input id="foto" type='file'
+                                <input id="foto" type='file' 
                                     class="form-control @error('foto') is-invalid @enderror" name="foto"
-                                    value="{{ old('foto') }}" autocomplete="username">
+                                    value="{{ old('foto') }}" autocomplete="foto">
 
                                 @error('foto')
                                     <span class="invalid-feedback" role="alert">
@@ -219,6 +219,6 @@
 
 @push('script')
     <script src="{{ asset('maps/mapsInsert.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap" async
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAsclj-WqBBlkJwS2zNu95m4dfA80MG4k&callback=initMap" async
         defer></script>
 @endpush

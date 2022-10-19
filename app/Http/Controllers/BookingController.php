@@ -45,7 +45,7 @@ class BookingController extends Controller
             $bookings[$key]->durasi = $this->dateDiffInDays($bookings[$key]->tanggal_masuk, $bookings[$key]->tanggal_keluar);
         }
 
-        return view('dashboard.Admin.Booking.index', compact('bookings'));
+        return view('dashboard.admin.Booking.index', compact('bookings'));
     }
 
     public function detail($id)
@@ -129,7 +129,7 @@ class BookingController extends Controller
                 }
             }
 
-            return view('dashboard.Admin.Booking.detail', compact(
+            return view('dashboard.admin.Booking.detail', compact(
                 'bookings',
                 'detail_pesanan',
                 'tagihans',

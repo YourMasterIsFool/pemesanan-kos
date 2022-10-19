@@ -34,7 +34,7 @@
     
 
     <script src="{{ asset('maps/maps.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATWmlqT4BxhuydhfOPcFcfT6KvnPTsD_w&callback=initMap" async
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAsclj-WqBBlkJwS2zNu95m4dfA80MG4k&callback=initMap" async
         defer></script>
         <script>
             const kos = @json($kos);

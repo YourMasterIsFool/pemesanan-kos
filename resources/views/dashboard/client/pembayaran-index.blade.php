@@ -90,7 +90,7 @@
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $item->bulan }}</td>
-                                        <td>Rp. {{ $item->total }}</td>
+                                        <td>Rp. {{ number_format($item->total, 0) }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>
                                             @if ($item->status === 'Menunggu Pembayaran')
@@ -127,14 +127,21 @@
                                                         <label for="bukti"
                                                             style="margin-bottom: 15px; text-align: center">Upload Bukti
                                                             Pembayaran bulan {{ $item->bulan }}</label>
-                                                        <div style="text-align: start; font-size: 12px; font-weight: bold;">
-                                                            <p style="margin-bottom: 5px;">* Transfer ke rekening berikut</p>
+                                                        <div
+                                                            style="text-align: start; font-size: 12px; font-weight: bold;">
+                                                            <p style="margin-bottom: 5px;">* Transfer ke rekening
+                                                                berikut</p>
                                                             <p>BTN. 002240160011720. Afifah Dewi Yantika</p>
                                                         </div>
                                                         <input id="bukti" type='file'
                                                             class="form-control @error('bukti') is-invalid @enderror"
                                                             name="bukti" value="{{ old('bukti') }}"
                                                             autocomplete="username">
+                                                        @error('bukti')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">

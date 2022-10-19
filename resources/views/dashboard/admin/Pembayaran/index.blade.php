@@ -33,8 +33,8 @@
                                     <td scope="row">{{ ++$i }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->nama_kos }}</td>
-                                    <td>Rp. {{ $item->total }}</td>
-                                    <td>Rp. {{ $item->sisa_tagihan }}</td>
+                                    <td>Rp. {{ number_format($item->total, 0) }}</td>
+                                    <td>Rp. {{ number_format($item->sisa_tagihan, 0) }}</td>
                                     <td>{{ $item->status }}</td>
                                     @can('pemilik')
                                         <td>

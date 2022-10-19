@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Catatan;
 use App\Models\Kos;
 use App\Models\Pembayaran;
 use App\Models\Tagihan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -137,6 +139,17 @@ class PembayaranController extends Controller
         $tagihan = Tagihan::find($id);
         $detail_pembayaran = Pembayaran::find($tagihan->pembayaran_id);
         $kos = Kos::find($detail_pembayaran->kos_id);
+        $nama_pemesan = User::find($tagihan->users_id)->nama;
+
+        $bulan_pembayaran = "";
+
+        foreach ($this->getBulan() as $key_bulan => $bulan) {
+            // dd($tagihan->bulan == 4);
+
+            if ($tagihan->bulan == $key_bulan) {
+                $bulan_pembayaran = $bulan;
+            }
+        }
 
         $tagihan->update([
             'status_id' => $this->STATUS_PEMBAYARAN_TERKONFIRMASI
@@ -159,6 +172,15 @@ class PembayaranController extends Controller
         $detail_pembayaran->update([
             'status_id' => $this->STATUS_DIBAYAR_SEBAGIAN,
             'sisa_tagihan' => $sisa_tagihan
+        ]);
+
+        $booking = Booking::where('users_id', $tagihan->users_id)->first();
+
+        Catatan::create([
+            'nama' => $nama_pemesan,
+            'nomor_kamar' => $booking->nomor_kamar,
+            'bulan' => $bulan_pembayaran,
+            'jumlah' => $tagihan->total
         ]);
 
         Alert::success('info', 'Pembayran berhasil dikonfirmasi');

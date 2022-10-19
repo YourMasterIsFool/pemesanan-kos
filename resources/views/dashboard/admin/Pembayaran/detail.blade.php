@@ -83,7 +83,7 @@
                                                 <tr>
                                                     <td>{{ ++$i }}</td>
                                                     <td>{{ $item->bulan }}</td>
-                                                    <td>Rp. {{ $item->total }}</td>
+                                                    <td>Rp. {{ number_format($item->total, 0) }}</td>
                                                     <td>{{ $item->status }}</td>
                                                     @if ($item->status === 'Menunggu Pembayaran')
                                                         <td>Belum dibayar</td>

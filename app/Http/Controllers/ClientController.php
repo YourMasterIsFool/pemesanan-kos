@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadBuktiPembayaranRequest;
 use App\Models\Kos;
 use App\Models\Pembayaran;
 use App\Models\Pemesanan;
@@ -168,8 +169,9 @@ class ClientController extends Controller
         ));
     }
 
-    public function uploadBuktiPembayaran(Request $request, $id)
+    public function uploadBuktiPembayaran(UploadBuktiPembayaranRequest $request, $id)
     {
+        $validated = $request->validated();
         $tagihan = Tagihan::find($id);
 
         $fileName = $request->bukti->getClientOriginalName();

@@ -29,9 +29,9 @@ class RegisterRequest extends FormRequest
             'alamat' => 'required',
             'no_telepon' => 'required',
             'password' => 'required',
-            'ktp' => 'required',
+            'ktp' => 'required|file|max:2048',
             'jenis_kelamin' => 'required|numeric',
-            'email' => 'required|email:rfc,dns|unique:users,email',
+            'email' => 'required|email|unique:users,email',
         ];
     }
 
@@ -43,6 +43,7 @@ class RegisterRequest extends FormRequest
             'nik.unique' => 'Nik sudah digunakan',
             'alamat.required' => 'Alamat tidak boleh kosong',
             'ktp.required' => 'File KTP tidak boleh kosong',
+            'ktp.max' => 'Ukuran file maksimal 2 Mb',
             'jenis_kelamin.numeric' => 'Jenis Kelamin tidak boleh kosong',
             'password.required' => 'Password tidak boleh kosong',
             'no_telepon.required' => 'Nomor Telepon tidak boleh kosong',

@@ -82,7 +82,7 @@
                                                 </div>
                                                 <div class="detail-item small">
                                                     <h2 class="title">Harga Sewa</h2>
-                                                    <h2 class="value">{{ $detail_pesanan[0]->harga_sewa }}</h2>
+                                                    <h2 class="value">Rp. {{  number_format($detail_pesanan[0]->harga_sewa, 0) }}</h2>
                                                 </div>
                                                 <div class="detail-item small">
                                                     <h2 class="title">Fasilitas</h2>
@@ -184,7 +184,7 @@
                                                     <tr>
                                                         <td>{{ ++$i }}</td>
                                                         <td>{{ $item->bulan }}</td>
-                                                        <td>Rp. {{ $item->total }}</td>
+                                                        <td>Rp. {{ number_format($item->total, 0) }}</td>
                                                         <td>{{ $item->status }}</td>
                                                         @if ($item->status === 'Menunggu Pembayaran')
                                                             <td>Belum dibayar</td>

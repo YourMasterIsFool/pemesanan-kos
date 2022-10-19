@@ -87,7 +87,7 @@ class KosController extends Controller
     public function save(TambahKosRequest $request)
     {
         $validated = $request->validated();
-        
+
         $kos_baru = Kos::create([
             'nama_kos' => $request->nama,
             'alamat' => $request->alamat,

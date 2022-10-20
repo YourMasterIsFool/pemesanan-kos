@@ -24,7 +24,7 @@ class UploadBuktiPembayaranRequest extends FormRequest
     public function rules()
     {
         return [
-            'bukti' => 'required|file|max:2048',
+            'bukti' => 'required|file|max:2048|mimes:jpeg,png,jpg',
         ];
     }
 
@@ -32,7 +32,8 @@ class UploadBuktiPembayaranRequest extends FormRequest
     {
         return [
             'bukti.required' => 'File bukti pembayaran tidak boleh kosong',
-            'bukti.max' => 'Ukuran file maksimal 2 Mb'
+            'bukti.max' => 'Ukuran file maksimal 2 Mb',
+            'bukti.mimes' => 'File harus berformat jpeg, png, atau jpg',
         ];
     }
 }

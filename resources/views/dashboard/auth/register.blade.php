@@ -24,13 +24,14 @@
 
     <div class="login-container" style="overflow-y: scroll;">
         <div class="content">
-            <div class="form-register">
-                <p style="text-align: center; font-weight: bold; font-size: 25px; margin-bottom: 50px" class="font-1">
+            <div class="form-register" style="max-height: 600px; overflow-y: scroll;">
+                <p style="text-align: center; font-weight: bold; font-size: 25px; margin-bottom: 30px" class="font-1">
                     Website Pemesanan Kos</p>
                 <p style="text-align: start; font-weight: bold; font-size: 18px; margin-bottom: 20px" class="font-1">
                     Register Pengguna</p>
                 <form method="POST" action="{{ route('user.register.create') }}" enctype="multipart/form-data">
                     @csrf
+                    @method('POST')
 
                     <div class="double_form">
                         <div class="left">
@@ -81,16 +82,28 @@
 
                             <div class="row mb-3">
                                 <div class="col">
-                                    <label for="jenis_kelamin" class="font-1">Jenis Kelamin</label>
-                                    <select class="form-select @error('jenis_kelamin') is-invalid @enderror"
-                                        id="jenis_kelamin" name="jenis_kelamin" aria-label="Default select example">
-                                        <option selected>Pilih Jenis Kelamin</option>
-                                        @foreach ($jenis_kelamin as $kelamin)
-                                            <option value="{{ $kelamin->id }}">{{ $kelamin->tipe }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="password" class="font-1">Password</label>
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        autocomplete="new-password">
 
-                                    @error('jenis_kelamin')
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="ktp" class="font-1">Upload Foto KTP</label>
+                                    <input id="ktp" type='file'
+                                        class="form-control @error('ktp') is-invalid @enderror" name="ktp"
+                                        autocomplete="ktp">
+
+                                    @error('ktp')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -134,12 +147,16 @@
 
                             <div class="row mb-3">
                                 <div class="col">
-                                    <label for="password" class="font-1">Password</label>
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        autocomplete="new-password">
+                                    <label for="jenis_kelamin" class="font-1">Jenis Kelamin</label>
+                                    <select class="form-select @error('jenis_kelamin') is-invalid @enderror"
+                                        id="jenis_kelamin" name="jenis_kelamin" aria-label="Default select example">
+                                        <option selected>Pilih Jenis Kelamin</option>
+                                        @foreach ($jenis_kelamin as $kelamin)
+                                            <option value="{{ $kelamin->id }}">{{ $kelamin->tipe }}</option>
+                                        @endforeach
+                                    </select>
 
-                                    @error('password')
+                                    @error('jenis_kelamin')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -149,18 +166,20 @@
 
                             <div class="row mb-3">
                                 <div class="col">
-                                    <label for="ktp" class="font-1">Upload Foto KTP</label>
-                                    <input id="ktp" type='file'
-                                        class="form-control @error('ktp') is-invalid @enderror" name="ktp"
-                                        autocomplete="ktp">
+                                    <label for="password_confirmation" class="font-1">Konfirmasi Password</label>
+                                    <input id="password_confirmation" type="password"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
+                                        autocomplete="new-password">
 
-                                    @error('ktp')
+                                    @error('password_confirmation')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
 

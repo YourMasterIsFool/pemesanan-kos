@@ -23,10 +23,14 @@ use App\Http\Controllers\PemesananController;
 */
 
 Route::get('/', function () {
+    return view('landing');
+    // return redirect()->route('user.login.view');
+})->name('home');
+
+
+Route::get('/login', function () {
     return redirect()->route('user.login.view');
-});
-
-
+})->name('login');
 
 Route::prefix('client')->middleware(['auth'])->group(function () {
     Route::get('/home', [ClientController::class, 'homeView'])->name('client.welcome');

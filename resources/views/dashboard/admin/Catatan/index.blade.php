@@ -11,10 +11,31 @@
             <div style="display: flex; justify-content: end; margin-bottom: 10px;">
                 {{-- <a href="{{ route('admin.catatan.create') }}" class="btn1">Tambah Catatan</a> --}}
             </div>
+            <div style="margin: 20px 0;">
+                <form action="{{ route('admin.catatan.index') }}" style="display: flex; align-items:center;" method="GET">
+                    <div class="form-group" style="width: 160px; margin-right: 10px;">
+                        <label for="bulan">Bulan</label>
+                        <select required name="bulan" class="form-select" aria-label="Default select example">
+                            <option selected value="all">Semua</option>
+                            @foreach ($bulans as $key => $value)
+                                @if ($input_bulan == $value)
+                                    <option selected value="{{ $key }}">{{ $value }}</option>
+                                @else
+                                <option value="{{ $key }}">{{ $value }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <button type="submit" style="height: 40px; margin-top: 30px;" class="btn1">Cari</button>
+                </form>
+            </div>
             <div style="margin-top: 20px;" class="">
                 @if (count($catatans) < 1)
                     <h1 style="text-align: center; font-size: 24px;">Tidak ada data</h1>
                 @else
+                   
                     <table class="table">
                         @php
                             $i = 0;
@@ -36,7 +57,7 @@
                                     <td>{{ $item->nomor_kamar }}</td>
                                     <td>{{ $item->bulan }}</td>
                                     <td>Rp. {{ number_format($item->jumlah) }}</td>
-                                    
+
                                 </tr>
                                 <!-- Modal -->
                                 <div class="modal fade" id="pemilikModal-{{ $item->id }}" tabindex="-1"

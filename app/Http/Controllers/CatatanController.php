@@ -8,10 +8,36 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class CatatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $catatans = Catatan::all();
-        return view('dashboard.admin.Catatan.index', compact('catatans'));
+        $input_bulan = $request->input('bulan');
+        $bulans = $this->bulan();
+        // dd($input_bulan);
+        // dd($bulans);
+
+        if ($input_bulan === 'all' || $input_bulan === null) {
+            $catatans = Catatan::all();
+            return view('dashboard.admin.Catatan.index', compact('catatans', 'input_bulan', 'bulans'));
+        }
+        $catatans = Catatan::where('bulan', $input_bulan)->get();
+        return view('dashboard.admin.Catatan.index', compact('catatans', 'input_bulan', 'bulans'));
+    }
+
+    public function bulan(){
+        return [
+            "Januari" => "Januari",
+            "Februari" => "Februari",
+            "Maret" => "Maret",
+            "April" => "April",
+            "Mei" => "Mei",
+            "Juni" => "Juni",
+            "Juli" => "Juli",
+            "Agustus" => "Agustus",
+            "September" => "September",
+            "Oktober" => "Oktober",
+            "November" => "November",
+            "Desember" => "Desember"
+        ];
     }
 
     public function createView()
@@ -49,7 +75,7 @@ class CatatanController extends Controller
             'jumlah' => $request->jumlah
         ]);
 
-        
+
         Alert::success('info', 'Catatan berhasil diupdate');
         return redirect()->route('admin.catatan.index');
     }

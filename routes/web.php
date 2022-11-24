@@ -107,8 +107,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('/{id}/edit', [CatatanController::class, 'editView'])->name('admin.catatan.edit.view');
         Route::post('/{id}/edit', [CatatanController::class, 'editSave'])->name('admin.catatan.edit.save');
         Route::delete('/{id}', [CatatanController::class, 'delete'])->name('admin.catatan.delete');
+        Route::get('/cetak_catatan', [CatatanController::class, 'cetak_catatan'])->name('admin.catatan.cetak');
     });
-    
+
     Route::prefix('booking')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
         Route::get('/{id}', [BookingController::class, 'detail'])->name('admin.booking.detail');

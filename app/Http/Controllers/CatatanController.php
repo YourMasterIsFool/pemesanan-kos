@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catatan;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use PDF;
 
 class CatatanController extends Controller
 {
@@ -23,7 +24,8 @@ class CatatanController extends Controller
         return view('dashboard.admin.Catatan.index', compact('catatans', 'input_bulan', 'bulans'));
     }
 
-    public function bulan(){
+    public function bulan()
+    {
         return [
             "Januari" => "Januari",
             "Februari" => "Februari",
@@ -88,5 +90,32 @@ class CatatanController extends Controller
 
         Alert::success('info', 'Catatan berhasil dihapus');
         return redirect()->route('admin.catatan.index');
+    }
+
+    public function cetak_catatan(Request $request)
+    {
+
+        $startMonth = date('Y-m-d', strtotime($request->get('start_month')));
+        $endMonth = date('Y-m-d', strtotime($request->get('end_month')));
+
+        // dd($endMonth);
+
+        $listCatatan = Catatan::whereBetween('bulan', [$startMonth, $endMonth])->get();
+        $totalPendapatan = $listCatatan->sum('jumlah');
+
+
+        // dd($listCatatan);
+        $data = array(
+            'startMonth' => $startMonth,
+            'endMonth' => $endMonth,
+            'listCatatan' => $listCatatan,
+            'totalPendapatan' => $totalPendapatan
+        );
+
+
+
+        $pdf = PDF::loadView('dashboard.admin.Catatan.cetak_pdf', $data);
+
+        return $pdf->download('laporan-pegawai-pdf');
     }
 }

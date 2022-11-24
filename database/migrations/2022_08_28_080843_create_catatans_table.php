@@ -17,7 +17,7 @@ class CreateCatatansTable extends Migration
             $table->id();
             $table->string('nama')->nullable();
             $table->string('nomor_kamar')->nullable();
-            $table->string('bulan')->nullable();
+            $table->date('bulan')->nullable();
             $table->integer('jumlah')->nullable();
             $table->timestamps();
         });

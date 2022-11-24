@@ -147,7 +147,9 @@ class PembayaranController extends Controller
             // dd($tagihan->bulan == 4);
 
             if ($tagihan->bulan == $key_bulan) {
-                $bulan_pembayaran = $bulan;
+
+
+                $bulan_pembayaran = date('Y') . '-' . $bulan . '-' . '1';
             }
         }
 
